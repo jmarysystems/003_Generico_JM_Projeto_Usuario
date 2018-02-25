@@ -1,8 +1,8 @@
 ----------------------------------------------------------------
-Sat Feb 24 22:01:08 BRT 2018:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): instance a816c00e-0161-ca7a-4d0a-000000ae8128 
+Sun Feb 25 12:20:33 BRT 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): instance a816c00e-0161-cd8d-20eb-000000bc61c8 
 on database directory C:\000000\JM\00_Generico\003_Generico_JM_Projeto_Usuario\Generico_JM_003_Usuarios_do_Sistema\Banco_De_Dados  with class loader sun.misc.Launcher$AppClassLoader@d93b30 
-Loaded from file:/C:/000000/JM/00_Generico/003_Generico_JM_Projeto_Usuario/Generico_JM_003_Usuarios_do_Sistema/dist/run1965377163/lib/derby.jar
+Loaded from file:/C:/000000/JM/00_Generico/003_Generico_JM_Projeto_Usuario/Generico_JM_003_Usuarios_do_Sistema/dist/run1795457975/lib/derby.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_131-b11
 user.dir=C:\000000\JM\00_Generico\003_Generico_JM_Projeto_Usuario\Generico_JM_003_Usuarios_do_Sistema
