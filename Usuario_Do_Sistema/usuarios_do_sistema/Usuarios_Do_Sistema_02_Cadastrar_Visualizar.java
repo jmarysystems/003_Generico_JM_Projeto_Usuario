@@ -34,7 +34,7 @@ import usuarios_imagens_beans.UsuarioImagens;
 public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPanel {
     
     Home Home;
-    String status_cadastro;
+    public String status_cadastro;
     UsuarioSistema UsuarioSistema_Recebido;
     JTabbedPane JTabbedPane_Recebido;
     
@@ -98,7 +98,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
         } catch( Exception e ){  } } }.start();
     }
     
-    private void setarImagem_Principal(){ 
+    public void setarImagem_Principal(){ 
     new Thread() {   @Override public void run() { try { 
         
         List<UsuarioImagens> UsuarioImagens = null;
@@ -1569,7 +1569,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             Exportando.pbg.setValue( 50 ); 
             
             Home.ControleTabs.AddTabComControle(jTabbedPane1, "Visualizador Imagens Banco de Dados", "livroTp.gif", 
-                        new Visualizador_Banco_de_Dados(Home, 0, this) );   
+                        new Visualizador_Banco_de_Dados(Home, UsuarioSistema_Recebido.getId(), this) );   
             
             Exportando.fechar();  
         }      
