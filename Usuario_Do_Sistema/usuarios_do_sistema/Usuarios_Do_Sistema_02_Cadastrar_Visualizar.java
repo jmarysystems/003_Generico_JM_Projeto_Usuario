@@ -14,12 +14,17 @@ import home_controle_menus_norte.imagens.Imagens_Menu_Norte;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.persistence.Query;
 import javax.swing.JTabbedPane;
@@ -34,9 +39,11 @@ import usuarios_imagens_beans.UsuarioImagens;
 public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPanel {
     
     Home Home;
-    public String status_cadastro;
+    String status_cadastro;
     UsuarioSistema UsuarioSistema_Recebido;
     JTabbedPane JTabbedPane_Recebido;
+    
+    public List<String> lista_de_Endereco_imagemExterna_ = new ArrayList<>();
     
     /** Creates new form SombraVendas
      * @param Home2
@@ -1555,7 +1562,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             Exportando.pbg.setValue( 50 ); 
             
             Home.ControleTabs.AddTabComControle(jTabbedPane1, "Visualizador Imagens Banco de Dados", "livroTp.gif", 
-                        new Visualizador_Banco_de_Dados(Home, 0, this) ); 
+                        new Visualizador_Banco_de_Dados(Home, 0, this, status_cadastro) ); 
             
             Exportando.fechar();             
         }
@@ -1569,7 +1576,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             Exportando.pbg.setValue( 50 ); 
             
             Home.ControleTabs.AddTabComControle(jTabbedPane1, "Visualizador Imagens Banco de Dados", "livroTp.gif", 
-                        new Visualizador_Banco_de_Dados(Home, UsuarioSistema_Recebido.getId(), this) );   
+                        new Visualizador_Banco_de_Dados(Home, UsuarioSistema_Recebido.getId(), this, status_cadastro) );   
             
             Exportando.fechar();  
         }      
@@ -2425,7 +2432,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             
             try{
                 
-                cadastrar();
+                cadastrar_Usuario();
                 
             }catch( Exception e ){
                 
@@ -2449,11 +2456,13 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
 
     }
     
-    private void cadastrar(){  
+    private void cadastrar_Usuario(){  
         try{
             
             DAOGenericoJPA DAOGenericoJPA2 = new DAOGenericoJPA( UsuarioSistema_Recebido, JPAUtil.em());
             UsuarioSistema UsuarioSistema_Cadastrado = (UsuarioSistema) DAOGenericoJPA2.gravanovoOUatualizar();
+            
+            verificar_lista_de_Endereco_imagemExterna(UsuarioSistema_Cadastrado);
             
             String rbusca = ""; 
             try{ rbusca = UsuarioSistema_Recebido.getLogin().toUpperCase(); }catch( Exception e ){}
@@ -2473,6 +2482,66 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             System.out.println("Erro ao cadastrar");
             e.printStackTrace();
         }
+    }
+    
+    private void verificar_lista_de_Endereco_imagemExterna(UsuarioSistema UsuarioSistema_Cadastrado){
+        try{
+            
+            for (int i=0; i < lista_de_Endereco_imagemExterna_.size(); i++) {
+                
+                File imagem = new File( lista_de_Endereco_imagemExterna_.get(i) ); 
+                
+                salvar_imagemExterna(UsuarioSistema_Cadastrado, imagem);
+            }
+        }catch( Exception e ){}
+    }
+    
+    private void salvar_imagemExterna(UsuarioSistema UsuarioSistema_Cadastrado, File imagemExterna_Endereco){ 
+
+        try { 
+            
+            BufferedImage bufImg = null;
+            ImageIcon     icon   = null;
+            Image         image  = null;
+            try{
+                
+                bufImg = ImageIO.read( imagemExterna_Endereco );
+                icon   = new ImageIcon(bufImg);
+                image  = icon.getImage();//ImageIO.read(f);  
+            } catch (IOException ex) {}  
+
+            
+                String nome = imagemExterna_Endereco.getName();
+                String nomeList[] = nome.split(Pattern.quote("."));
+                
+                UsuarioImagens UsuarioImagens = new UsuarioImagens();
+                
+                ByteArrayOutputStream bytesImg = new ByteArrayOutputStream();
+                String extencao = imagemExterna_Endereco.getPath().substring( imagemExterna_Endereco.getPath().lastIndexOf('.') + 1 ); 
+                
+                ImageIO.write((BufferedImage)image, extencao, bytesImg);//seta a imagem para bytesImg
+                bytesImg.flush();//limpa a variável
+                byte[] byteArray = bytesImg.toByteArray();//Converte ByteArrayOutputStream para byte[] 
+                bytesImg.close();//fecha a conversão
+                
+                UsuarioImagens.setImagem(byteArray);
+                
+                try{ UsuarioImagens.setIdUsuarioSistema( UsuarioSistema_Cadastrado.getId() ); }catch( Exception e ){}
+                try{ UsuarioImagens.setNome( nomeList[0] ); }catch( Exception e ){}
+                
+                try{
+                    DAOGenericoJPA DAOGenericoJPA2 = new DAOGenericoJPA( UsuarioImagens, JPAUtil.em());
+                    UsuarioImagens UsuarioImagens_Cadastrado = (UsuarioImagens) DAOGenericoJPA2.gravanovoOUatualizar();
+
+                }catch( Exception e ){}
+                
+        } catch( Exception e ){ 
+        
+            JOPM JOptionPaneMod = new JOPM( 2, "ERRO AO CADASTRAR, 2"
+                + "\nNÃO CADASTRADO"
+                + "\nNenhum dado CADASTRADO."
+                + "\n", "CADASTRAR - salvar_imagemExterna" );
+        } 
     }
 /// CADASTRANDO ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
