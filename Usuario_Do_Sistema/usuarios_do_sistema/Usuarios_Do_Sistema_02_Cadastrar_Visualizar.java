@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.persistence.Query;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import login_do_sistema.Login;
 import usuarios_do_sistema_beans.UsuarioSistema;
@@ -1791,7 +1792,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             
             Exportando.pbg.setValue( 50 ); 
             
-            setando_os_que_nao_precisam_de_validacao();  
+            verificando_se_o_usuario_e_o_Cleilson();  
             
             Exportando.fechar();             
         }
@@ -1804,7 +1805,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             
             Exportando.pbg.setValue( 50 ); 
             
-            setando_os_que_nao_precisam_de_validacao();  
+            verificando_se_o_usuario_e_o_Cleilson();  
             
             Exportando.fechar();  
         }
@@ -1836,6 +1837,30 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
     }//GEN-LAST:event_btSalvarMousePressed
 
     private void btExcluirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btExcluirMousePressed
+        try { 
+    
+            Object[] options = {
+                "Confirmar",
+                "Cancelar" 
+            };
+            int n = JOptionPane.showOptionDialog(null,
+                    "Confirme a Opção de Excluir o Usuário\n"
+                    + "Listado Abaixo.",
+                    "Opção de Consulta",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
+//////////////////////////////////////////////////////
+            if(n==0){
+        
+                excluir_Usuario_Atual();
+            }            
+        } catch( Exception e ){} 
+    }//GEN-LAST:event_btExcluirMousePressed
+      
+    private void excluir_Usuario_Atual() {                                       
          new Thread() {   @Override public void run() { try { Thread.sleep( 1 );
         
             Exportando = new Exportando("EXCLUINDO...");
@@ -1869,6 +1894,8 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
                         }
                         else{
                             
+                            excluir_Imagens( List_2_UsuarioSistema.get(0) );
+                            
                             DAOGenericoJPA DAOGenericoJPA2 = new DAOGenericoJPA( List_2_UsuarioSistema.get(0), JPAUtil.em());
                             DAOGenericoJPA2.excluir();
 
@@ -1888,8 +1915,36 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
                 }
             
         } catch( InterruptedException e ){ Exportando.fechar(); e.printStackTrace(); } } }.start();
-    }//GEN-LAST:event_btExcluirMousePressed
-       
+    }
+    
+    private void excluir_Imagens(UsuarioSistema UsuarioSistema_Excluir_Imagens){ 
+    /*new Thread() {   @Override public void run() {*/ try { 
+             
+        List<UsuarioImagens> lista_Banco = null;
+        try{ 
+            Query q = JPAUtil.em().createNativeQuery("SELECT * FROM JM.USUARIO_IMAGENS WHERE ID_USUARIO_SISTEMA = ?", UsuarioImagens.class );
+            q.setParameter( 1, UsuarioSistema_Excluir_Imagens.getId() );
+            lista_Banco = q.getResultList();   
+        }catch( Exception e ){ }
+        
+        String rbusca = ""; 
+        try{ rbusca = lista_Banco.get(0).getNome(); }catch( Exception e ){}
+            
+        if( !rbusca.equals("") ){	 
+	          
+            try{
+                
+                for (int i=0; i < lista_Banco.size(); i++) {
+                    
+                    DAOGenericoJPA DAOGenericoJPA2 = new DAOGenericoJPA( lista_Banco.get(i), JPAUtil.em());
+                    DAOGenericoJPA2.excluir();
+                }
+	    }catch(Exception e){ e.printStackTrace(); }  
+        }
+                            
+    } catch( Exception e ){ } //} }.start();
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPOpcao_12;
     private javax.swing.JPanel JPOpcao_13;
@@ -2032,11 +2087,53 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
     }
     
 /// CADASTRANDO ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private void verificando_se_o_usuario_e_o_Cleilson(){ 
+        
+        try{
+            
+            if(status_cadastro.equalsIgnoreCase("Cadastrando...")){
+                
+                setando_os_que_nao_precisam_de_validacao();
+            }
+            else{
+                
+                if( UsuarioSistema_Recebido.getLogin().equalsIgnoreCase("cleilson") ){
+                
+                    Class<Imagens_Internas> clazzHome = Imagens_Internas.class;
+                    JOPM JOptionPaneMod = new JOPM( 1, "ALTERANDO USUÁRIO SELECIONADO\n"
+                            + "\nUSUÁRIO: " + UsuarioSistema_Recebido.getLogin() 
+                            + "\nVOCÊ NÃO TEM AUTORIZAÇÃO PARA ALTERAR O USUÁRIO CLEILSON"
+                            + "\nOK Para Prosseguir"
+                            ,"Class: " + this.getClass().getName(),
+                            new ImageIcon( clazzHome.getResource("logocangaco2.png")) );  
+                }
+                else{
+                
+                    setando_os_que_nao_precisam_de_validacao();
+                }
+            }
+            
+        }catch( Exception e ){}
+    }
+    
     private void setando_os_que_nao_precisam_de_validacao(){ 
         
         try{
             
             try{ UsuarioSistema_Recebido.setCodigoAuxiliar( tfCodigoAuxiliar.getText().trim().toUpperCase() ); }catch( Exception e ){}
+            
+            try{
+                
+                if( chPermitirAcessar.isSelected() == true ){
+                    
+                    try{ UsuarioSistema_Recebido.setPermitirAcessoAoSistema( "SIM" ); }catch( Exception e ){}
+                }
+                else{
+                    
+                    try{ UsuarioSistema_Recebido.setPermitirAcessoAoSistema( "NAO" ); }catch( Exception e ){}
+                }
+ 
+            }catch( Exception e ){}
             
             verificar_Usuario_Logado();
             
