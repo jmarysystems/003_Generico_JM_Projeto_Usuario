@@ -2058,7 +2058,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             }
             else{
 
-                Class<imagens_internas.Imagens_Internas> clazzHome = imagens_internas.Imagens_Internas.class;
+                Class<br.com.jmary.home.imagens.Imagens_Internas> clazzHome = br.com.jmary.home.imagens.Imagens_Internas.class;
                 JOPM JOptionPaneMod = new JOPM( 1, "STATUS DO CADASTRO\n"
                         + "\n"
                         + "\nNÃO HÁ USUÁRIO LOGADO!\n"
@@ -2073,8 +2073,8 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
         }catch( Exception e ){ 
             
                 e.printStackTrace();
-            
-                Class<imagens_internas.Imagens_Internas> clazzHome = imagens_internas.Imagens_Internas.class;
+                            
+                Class<Imagens_Internas> clazzHome = Imagens_Internas.class;
                 JOPM JOptionPaneMod = new JOPM( 1, "USUÁRIO LOGADO\n"
                         + "\n"
                         + "\nUSUÁRIO LOGADO INVÁLIDO!\n"
@@ -2194,7 +2194,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             
             tf_Email.requestFocus();
                     
-            Class<imagens_internas.Imagens_Internas> clazzHome = imagens_internas.Imagens_Internas.class;
+            Class<br.com.jmary.home.imagens.Imagens_Internas> clazzHome = br.com.jmary.home.imagens.Imagens_Internas.class;
             JOPM JOptionPaneMod = new JOPM( 1, "CAMPO EMAIL\n"
                     + "\n"
                     + "\nO CAMPO EMAIL ESTÁ VAZIO!\n"
@@ -2225,7 +2225,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             
             tfLogin.requestFocus();
                     
-            Class<imagens_internas.Imagens_Internas> clazzHome = imagens_internas.Imagens_Internas.class;
+            Class<br.com.jmary.home.imagens.Imagens_Internas> clazzHome = br.com.jmary.home.imagens.Imagens_Internas.class;
             JOPM JOptionPaneMod = new JOPM( 1, "CAMPO LOGIN\n"
                     + "\n"
                     + "\nO CAMPO LOGIN ESTÁ VAZIO!\n"
@@ -2261,7 +2261,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             
             tfSenha1.requestFocus();
                     
-            Class<imagens_internas.Imagens_Internas> clazzHome = imagens_internas.Imagens_Internas.class;
+            Class<br.com.jmary.home.imagens.Imagens_Internas> clazzHome = br.com.jmary.home.imagens.Imagens_Internas.class;
             JOPM JOptionPaneMod = new JOPM( 1, "CAMPO DEFINIR SENHA\n"
                     + "\n"
                     + "\nO CAMPO DEFINIR SENHA ESTÁ VAZIO!\n"
@@ -2299,7 +2299,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             }     
             else{
                 
-                Class<imagens_internas.Imagens_Internas> clazzHome = imagens_internas.Imagens_Internas.class;
+                Class<br.com.jmary.home.imagens.Imagens_Internas> clazzHome = br.com.jmary.home.imagens.Imagens_Internas.class;
                 JOPM JOptionPaneMod = new JOPM( 1, "SENHAS INFORMADAS DIFERENTES\n"
                     + "\n"
                     + "\nO CAMPO REPITA A SENHA ESTÁ DIFERENTE DO CAMPO SENHA!\n"
@@ -2315,7 +2315,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             
             tfSenha2.requestFocus();
                     
-            Class<imagens_internas.Imagens_Internas> clazzHome = imagens_internas.Imagens_Internas.class;
+            Class<br.com.jmary.home.imagens.Imagens_Internas> clazzHome = br.com.jmary.home.imagens.Imagens_Internas.class;
             JOPM JOptionPaneMod = new JOPM( 1, "CAMPO REPITA A SENHA\n"
                     + "\n"
                     + "\nO CAMPO REPITA A SENHA ESTÁ VAZIO!\n"
@@ -2378,7 +2378,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
         }
         else{
             
-            Class<imagens_internas.Imagens_Internas> clazzHome = imagens_internas.Imagens_Internas.class;
+            Class<br.com.jmary.home.imagens.Imagens_Internas> clazzHome = br.com.jmary.home.imagens.Imagens_Internas.class;
             JOPM JOptionPaneMod = new JOPM( 1, "CAMPO CÓDIGO AUXILIAR\n"
                     + "\n"
                     + "\nO CAMPO CÓDIGO AUXILIAR JÁ EXISTE!\n"
@@ -2442,7 +2442,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
         }
         else{
             
-            Class<imagens_internas.Imagens_Internas> clazzHome = imagens_internas.Imagens_Internas.class;
+            Class<br.com.jmary.home.imagens.Imagens_Internas> clazzHome = br.com.jmary.home.imagens.Imagens_Internas.class;
             JOPM JOptionPaneMod = new JOPM( 1, "CAMPO LOGIN\n"
                     + "\n"
                     + "\nO CAMPO LOGIN JÁ EXISTE!\n"
@@ -2467,7 +2467,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             String rbusca = ""; 
             try{ rbusca = UsuarioSistema_Recebido.getLogin().toUpperCase(); }catch( Exception e ){}
         
-            Class<imagens_internas.Imagens_Internas> clazzHome = imagens_internas.Imagens_Internas.class;
+            Class<br.com.jmary.home.imagens.Imagens_Internas> clazzHome = br.com.jmary.home.imagens.Imagens_Internas.class;
             JOPM JOptionPaneMod = new JOPM( 1, "CADASTRO\n"
                     + "\n"
                     + "\nSTATUS DO CADASTRO\n"

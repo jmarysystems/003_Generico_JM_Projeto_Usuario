@@ -133,7 +133,7 @@ public class Usuarios_Do_Sistema_03_Cadastro_Automatizado extends javax.swing.JP
             int img_Atual = 0; 
             
             JScrollPane sc = new JScrollPane();
-            sc.setViewportView( new Visualizador_Externo(Home,img_Atual,endereco_Externo_da_Pasta) );
+            //sc.setViewportView( new Visualizador_Externo(Home,img_Atual,endereco_Externo_da_Pasta) );
             
             Home.ControleTabs.AddTabsAoHome("PPT", "livroTp.gif", sc );
        

@@ -230,7 +230,7 @@ public class Usuarios_Do_Sistema_Imprimir_02_Criar_Html {
             }catch( Exception e ){}
             GESTOR DE COMPRAS - GBARBOSA - PRESIDENTE KENNEDY - B141*/
         
-        Class<imagens_internas.Imagens_Internas> clazzHome = imagens_internas.Imagens_Internas.class;
+        Class<br.com.jmary.home.imagens.Imagens_Internas> clazzHome = br.com.jmary.home.imagens.Imagens_Internas.class;
         
         synchronized ( this ){ try{ StringBuilder sb = new StringBuilder();
             sb.append(                    
