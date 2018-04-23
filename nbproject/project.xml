@@ -54,9 +54,8 @@ Contributor(s):
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>Generico_JM_003_Usuarios_do_Sistema</name>
             <source-roots>
-                <root id="src.Menus_Norte.dir"/>
                 <root id="src.dir"/>
-                <root id="src.Usuario_Do_Sistema.dir"/>
+                <root id="src.JM_003_Usuarios_do_Sistema.dir"/>
             </source-roots>
             <test-roots>
                 <root id="test.src.dir"/>
