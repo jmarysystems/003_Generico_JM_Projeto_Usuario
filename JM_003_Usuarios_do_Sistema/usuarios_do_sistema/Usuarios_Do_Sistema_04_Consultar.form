@@ -674,12 +674,9 @@
                                           <Component id="jPanel15" max="32767" attributes="0"/>
                                       </Group>
                                       <Group type="102" attributes="0">
-                                          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                                          <Component id="lbEditar" min="-2" pref="23" max="-2" attributes="0"/>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="lbDesativar" min="-2" pref="16" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                                          <Component id="lbVisualizar" min="-2" pref="35" max="-2" attributes="0"/>
+                                          <Component id="jp_Controle_de_Acesso" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="lb_Controle_de_Acesso" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <EmptySpace max="32767" attributes="0"/>
@@ -703,11 +700,10 @@
                                       <Component id="jScrollPane4" min="-2" pref="157" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="jPanel14" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lbEditar" min="-2" pref="32" max="-2" attributes="0"/>
-                                      <Component id="lbDesativar" min="-2" pref="32" max="-2" attributes="0"/>
-                                      <Component id="lbVisualizar" min="-2" pref="32" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="jPanel14" max="32767" attributes="0"/>
+                                      <Component id="jp_Controle_de_Acesso" pref="0" max="32767" attributes="0"/>
+                                      <Component id="lb_Controle_de_Acesso" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="32767" attributes="0"/>
                               </Group>
@@ -920,49 +916,91 @@
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBox2ActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JLabel" name="lbEditar">
+                        <Container class="javax.swing.JPanel" name="jp_Controle_de_Acesso">
+
+                          <Layout>
+                            <DimensionLayout dim="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="lbEditar" min="-2" pref="23" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="lbDesativar" min="-2" pref="16" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="lbVisualizar" min="-2" pref="35" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                            </DimensionLayout>
+                            <DimensionLayout dim="1">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                          <Component id="lbEditar" max="32767" attributes="0"/>
+                                          <Component id="lbDesativar" alignment="0" pref="20" max="32767" attributes="0"/>
+                                          <Component id="lbVisualizar" alignment="0" max="32767" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                            </DimensionLayout>
+                          </Layout>
+                          <SubComponents>
+                            <Component class="javax.swing.JLabel" name="lbDesativar">
+                              <Properties>
+                                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                                  <Image iconType="3" name="/home_controle_menus_norte/imagens/exluir.png"/>
+                                </Property>
+                                <Property name="toolTipText" type="java.lang.String" value="Excluir"/>
+                                <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+                                  <Color id="Cursor em Forma de M&#xe3;o"/>
+                                </Property>
+                                <Property name="enabled" type="boolean" value="false"/>
+                              </Properties>
+                              <Events>
+                                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lbDesativarMousePressed"/>
+                              </Events>
+                            </Component>
+                            <Component class="javax.swing.JLabel" name="lbVisualizar">
+                              <Properties>
+                                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                                  <Image iconType="3" name="/home_controle_menus_norte/imagens/view_detail.png"/>
+                                </Property>
+                                <Property name="toolTipText" type="java.lang.String" value="Visualizar"/>
+                                <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+                                  <Color id="Cursor em Forma de M&#xe3;o"/>
+                                </Property>
+                                <Property name="enabled" type="boolean" value="false"/>
+                              </Properties>
+                              <Events>
+                                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lbVisualizarMousePressed"/>
+                              </Events>
+                            </Component>
+                            <Component class="javax.swing.JLabel" name="lbEditar">
+                              <Properties>
+                                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                                  <Image iconType="3" name="/home_controle_menus_norte/imagens/livroTp.png"/>
+                                </Property>
+                                <Property name="toolTipText" type="java.lang.String" value="Editar"/>
+                                <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+                                  <Color id="Cursor em Forma de M&#xe3;o"/>
+                                </Property>
+                                <Property name="enabled" type="boolean" value="false"/>
+                              </Properties>
+                              <Events>
+                                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lbEditarMousePressed"/>
+                              </Events>
+                            </Component>
+                          </SubComponents>
+                        </Container>
+                        <Component class="javax.swing.JLabel" name="lb_Controle_de_Acesso">
                           <Properties>
                             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                              <Image iconType="3" name="/home_controle_menus_norte/imagens/livroTp.png"/>
+                              <Image iconType="3" name="/home_controle_menus_norte/imagens/conexao.png"/>
                             </Property>
-                            <Property name="toolTipText" type="java.lang.String" value="Editar"/>
-                            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                              <Color id="Cursor em Forma de M&#xe3;o"/>
-                            </Property>
-                            <Property name="enabled" type="boolean" value="false"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lbEditarMousePressed"/>
-                          </Events>
-                        </Component>
-                        <Component class="javax.swing.JLabel" name="lbDesativar">
-                          <Properties>
-                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                              <Image iconType="3" name="/home_controle_menus_norte/imagens/exluir.png"/>
-                            </Property>
-                            <Property name="toolTipText" type="java.lang.String" value="Excluir"/>
-                            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                              <Color id="Cursor em Forma de M&#xe3;o"/>
-                            </Property>
-                            <Property name="enabled" type="boolean" value="false"/>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lbDesativarMousePressed"/>
-                          </Events>
-                        </Component>
-                        <Component class="javax.swing.JLabel" name="lbVisualizar">
-                          <Properties>
-                            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                              <Image iconType="3" name="/home_controle_menus_norte/imagens/view_detail.png"/>
-                            </Property>
-                            <Property name="toolTipText" type="java.lang.String" value="Visualizar"/>
-                            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                              <Color id="Cursor em Forma de M&#xe3;o"/>
-                            </Property>
-                            <Property name="enabled" type="boolean" value="false"/>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lbVisualizarMousePressed"/>
+                            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lb_Controle_de_AcessoMousePressed"/>
                           </Events>
                         </Component>
                       </SubComponents>

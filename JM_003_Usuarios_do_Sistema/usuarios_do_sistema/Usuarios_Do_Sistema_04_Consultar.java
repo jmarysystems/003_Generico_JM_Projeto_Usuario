@@ -4,11 +4,6 @@ package usuarios_do_sistema;
 import Sons.Som;
 import br.com.jmary.home.Home;
 import br.com.jmary.home.imagens.Imagens_Internas;
-import java.awt.Color;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -20,15 +15,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
 import javax.swing.Timer;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import br.com.jmary.home.jpa.DAOGenericoJPA;
-import br.com.jmary.home.jpa.DB;
 import br.com.jmary.home.jpa.DB_Bean;
 import br.com.jmary.home.jpa.JPAUtil;
 import br.com.jmary.utilidades.Arquivo_Ou_Pasta;
@@ -36,16 +26,11 @@ import br.com.jmary.utilidades.Exportando;
 import br.com.jmary.utilidades.ImportarExportarExcel;
 import br.com.jmary.utilidades.JFileChooserJM;
 import br.com.jmary.utilidades.JOPM;
-import home_controle_menus_norte.imagens.Imagens_Menu_Norte;
+import controle_de_acesso.Controle_De_Acesso_02_Cadastrar_Visualizar;
 import java.awt.HeadlessException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.DateFormat;
 import java.util.List;
 import javax.persistence.Query;
@@ -76,6 +61,7 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
     JPanel PerguntaX = new JPanel();
     
     Home Home;
+    Controle_De_Acesso_02_Cadastrar_Visualizar Controle_De_Acesso_02_Cadastrar_Visualizar;
     
     /** Creates new form SombraVendas
      * @param Home2 */
@@ -83,6 +69,32 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
         initComponents();
         
         Home = Home2;
+        lb_Controle_de_Acesso2.setVisible(false);
+        jp_Controle_de_Acesso.setVisible(true);
+        
+        PerguntaX = Pergunta;
+        
+        Home.ControleTabs.removerTabSemControleSelecionadoPeloNome(jTabbedPane1,Pergunta);
+        inserirTab_Interna_Ajuda();
+        
+        setarUrl_e_ImageIcon_Seta_Inicio();
+        tabelaInicio();   
+        
+        //setar_DefaultTableModel_tbPreferedSize(1);  
+        setar_DefaultTableModel_tmPesquisa(1);
+    }
+    
+    String selecionar_externo = "";
+    //Controle_De_Acesso_02_Cadastrar_Visualizar
+    public Usuarios_Do_Sistema_04_Consultar( Home Home2, Controle_De_Acesso_02_Cadastrar_Visualizar Controle_De_Acesso_02_Cadastrar_Visualizar2 ) {
+        initComponents();
+        
+        selecionar_externo = "controle_de_acesso";
+        
+        Home = Home2;
+        jp_Controle_de_Acesso.setVisible(false);
+        lb_Controle_de_Acesso.setVisible(true);
+        Controle_De_Acesso_02_Cadastrar_Visualizar = Controle_De_Acesso_02_Cadastrar_Visualizar2;
         
         PerguntaX = Pergunta;
         
@@ -190,9 +202,11 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
         JPOpcao_5 = new javax.swing.JPanel();
         jTextArea5 = new javax.swing.JTextArea();
         jComboBox2 = new javax.swing.JComboBox();
-        lbEditar = new javax.swing.JLabel();
+        jp_Controle_de_Acesso = new javax.swing.JPanel();
         lbDesativar = new javax.swing.JLabel();
         lbVisualizar = new javax.swing.JLabel();
+        lbEditar = new javax.swing.JLabel();
+        lb_Controle_de_Acesso = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(832, 504));
@@ -632,16 +646,6 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
             }
         });
 
-        lbEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home_controle_menus_norte/imagens/livroTp.png"))); // NOI18N
-        lbEditar.setToolTipText("Editar");
-        lbEditar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lbEditar.setEnabled(false);
-        lbEditar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                lbEditarMousePressed(evt);
-            }
-        });
-
         lbDesativar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home_controle_menus_norte/imagens/exluir.png"))); // NOI18N
         lbDesativar.setToolTipText("Excluir");
         lbDesativar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -659,6 +663,46 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
         lbVisualizar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 lbVisualizarMousePressed(evt);
+            }
+        });
+
+        lbEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home_controle_menus_norte/imagens/livroTp.png"))); // NOI18N
+        lbEditar.setToolTipText("Editar");
+        lbEditar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lbEditar.setEnabled(false);
+        lbEditar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lbEditarMousePressed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jp_Controle_de_AcessoLayout = new javax.swing.GroupLayout(jp_Controle_de_Acesso);
+        jp_Controle_de_Acesso.setLayout(jp_Controle_de_AcessoLayout);
+        jp_Controle_de_AcessoLayout.setHorizontalGroup(
+            jp_Controle_de_AcessoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jp_Controle_de_AcessoLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbDesativar, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbVisualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jp_Controle_de_AcessoLayout.setVerticalGroup(
+            jp_Controle_de_AcessoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jp_Controle_de_AcessoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jp_Controle_de_AcessoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(lbEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbDesativar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
+                    .addComponent(lbVisualizar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        lb_Controle_de_Acesso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home_controle_menus_norte/imagens/conexao.png"))); // NOI18N
+        lb_Controle_de_Acesso.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lb_Controle_de_AcessoMousePressed(evt);
             }
         });
 
@@ -680,12 +724,9 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
                             .addComponent(jComboBox2, 0, 127, Short.MAX_VALUE))
                         .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(lbEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lbDesativar, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addComponent(lbVisualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jp_Controle_de_Acesso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lb_Controle_de_Acesso)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
@@ -702,11 +743,10 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
                         .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbDesativar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbVisualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jp_Controle_de_Acesso, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(lb_Controle_de_Acesso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1852,6 +1892,30 @@ private void setar_na_tabela(UsuarioSistema UsuarioSistema){
             
         } catch( InterruptedException e ){ Exportando.fechar(); e.printStackTrace(); } } }.start();        
     }//GEN-LAST:event_lbVisualizarMousePressed
+
+    private void lb_Controle_de_AcessoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lb_Controle_de_AcessoMousePressed
+        try{  
+            
+            switch( selecionar_externo ){
+                case "controle_de_acesso": 
+                    Controle_De_Acesso_02_Cadastrar_Visualizar;
+                break;
+            }
+        }
+        else{
+
+            Class<Imagens_Internas> clazzHome = Imagens_Internas.class;
+            JOPM JOptionPaneMod = new JOPM( 1, "FILTRA TABELA\n"
+
+                + "\nPara filtrar dados da tabela 1º selecione uma célula\n"
+                + "\nOK Para Prosseguir"
+                ,"Class: " + this.getClass().getName(),
+                new ImageIcon( clazzHome.getResource("logocangaco2.png")) );
+        }
+            
+            
+        } catch( Exception e ){}
+    }//GEN-LAST:event_lb_Controle_de_AcessoMousePressed
     private void setarUrl_e_ImageIcon_Seta_Inicio(){
         try{                       
             
@@ -1950,19 +2014,23 @@ private void setar_na_tabela(UsuarioSistema UsuarioSistema){
             
             if ( tbPesquisa.getSelectedRow() != -1){               
 
-                lbEditar        .setEnabled(true);
-                lbDesativar     .setEnabled(true);
-                lbVisualizar    .setEnabled(true);
                 lb_Exportar_Exel.setEnabled(true);
                 lb_Impressora.setEnabled(true);
-
-            } else{
+                
+                if( jp_Controle_de_Acesso.isVisible() ){
                     
+                    lbEditar        .setEnabled(true);
+                    lbDesativar     .setEnabled(true);
+                    lbVisualizar    .setEnabled(true);   
+                }
+            } else{                  
+                                
+                lb_Exportar_Exel.setEnabled(false);
+                lb_Impressora.setEnabled(false);
+                
                 lbEditar     .setEnabled(false);
                 lbDesativar .setEnabled(false);
                 lbVisualizar.setEnabled(false);
-                lb_Exportar_Exel.setEnabled(false);
-                lb_Impressora.setEnabled(false);
             }
         } catch( Exception e ) {}
     }
@@ -1999,6 +2067,7 @@ private void setar_na_tabela(UsuarioSistema UsuarioSistema){
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextArea jTextArea5;
     private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JPanel jp_Controle_de_Acesso;
     private javax.swing.JPanel jp_Opcoes;
     private javax.swing.JPanel jp_Opcoes_Tabela;
     private javax.swing.JPanel jp_Opcoes_Tabela2;
@@ -2009,6 +2078,7 @@ private void setar_na_tabela(UsuarioSistema UsuarioSistema){
     public javax.swing.JLabel lbFiltro2;
     private javax.swing.JLabel lbLinha_Tabela;
     private javax.swing.JLabel lbVisualizar;
+    private javax.swing.JLabel lb_Controle_de_Acesso;
     private javax.swing.JLabel lb_Exportar_Exel;
     private javax.swing.JLabel lb_Impressora;
     public javax.swing.JTable tbPesquisa;
