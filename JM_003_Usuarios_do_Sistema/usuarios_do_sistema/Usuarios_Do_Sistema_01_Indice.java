@@ -7,6 +7,7 @@ package usuarios_do_sistema;
 
 import br.com.jmary.home.Home;
 import br.com.jmary.utilidades.Exportando;
+import controle_de_acesso.Verificar_Autorizacao;
 
 /**
  *
@@ -135,13 +136,21 @@ public class Usuarios_Do_Sistema_01_Indice extends javax.swing.JPanel {
             Exportando = new Exportando("ABRINDO...");
             Exportando.setVisible(true);Exportando.pbg.setMinimum(0);
             Exportando.pbg.setMaximum( 100 );
-            Exportando.pbg.setValue( 50 );
+            Exportando.pbg.setValue( 50 );           
             
-            Home.ControleTabs.removerTabSelecionado();
-            Home.ControleTabs.AddTabsAoHome("Cadastrar/Visualizar Usuário", "livroTp.gif", 
+            Verificar_Autorizacao Verificar_Autorizacao = new Verificar_Autorizacao();
+            if( Verificar_Autorizacao.verificar("USUARIO_SISTEMA", "CADASTRAR") == true ){
+                
+                Home.ControleTabs.removerTabSelecionado();
+                Home.ControleTabs.AddTabsAoHome("Cadastrar/Visualizar Usuário", "livroTp.gif", 
                     new Usuarios_Do_Sistema_02_Cadastrar_Visualizar(Home, jTabbedPane1, "Cadastrando...") );
-
+            }
+            else{            
+                Verificar_Autorizacao.sem_acesso();
+            }
+            
             Exportando.fechar();
+            
         } catch( Exception e ){ Exportando.fechar(); e.printStackTrace(); } } }.start();
     }//GEN-LAST:event_jLabel11MousePressed
 
@@ -150,13 +159,21 @@ public class Usuarios_Do_Sistema_01_Indice extends javax.swing.JPanel {
             Exportando = new Exportando("ABRINDO...");
             Exportando.setVisible(true);Exportando.pbg.setMinimum(0);
             Exportando.pbg.setMaximum( 100 );
-            Exportando.pbg.setValue( 50 );
+            Exportando.pbg.setValue( 50 );           
             
-            Home.ControleTabs.removerTabSelecionado();
-            Home.ControleTabs.AddTabsAoHome("Consultar Usuário", "livroTp.gif", 
+            Verificar_Autorizacao Verificar_Autorizacao = new Verificar_Autorizacao();
+            if( Verificar_Autorizacao.verificar("USUARIO_SISTEMA", "CONSULTAR") == true ){
+                
+                Home.ControleTabs.removerTabSelecionado();
+                Home.ControleTabs.AddTabsAoHome("Consultar Usuário", "livroTp.gif", 
                     new Usuarios_Do_Sistema_04_Consultar(Home) );
-
+            }
+            else{            
+                Verificar_Autorizacao.sem_acesso();
+            }
+            
             Exportando.fechar();
+            
         } catch( Exception e ){ Exportando.fechar(); e.printStackTrace(); } } }.start();
     }//GEN-LAST:event_jLabel13MousePressed
 
@@ -165,13 +182,21 @@ public class Usuarios_Do_Sistema_01_Indice extends javax.swing.JPanel {
             Exportando = new Exportando("ABRINDO...");
             Exportando.setVisible(true);Exportando.pbg.setMinimum(0);
             Exportando.pbg.setMaximum( 100 );
-            Exportando.pbg.setValue( 50 );
+            Exportando.pbg.setValue( 50 );           
             
-            Home.ControleTabs.removerTabSelecionado();
-            Home.ControleTabs.AddTabsAoHome("Cadastrar Usuário Altomatizado", "livroTp.gif", 
+            Verificar_Autorizacao Verificar_Autorizacao = new Verificar_Autorizacao();
+            if( Verificar_Autorizacao.verificar("USUARIO_SISTEMA", "CADASTRO_AUTO") == true ){
+                
+                Home.ControleTabs.removerTabSelecionado();
+                Home.ControleTabs.AddTabsAoHome("Cadastrar Usuário Altomatizado", "livroTp.gif", 
                     new Usuarios_Do_Sistema_03_Cadastro_Automatizado(Home) );
-
+            }
+            else{            
+                Verificar_Autorizacao.sem_acesso();
+            }
+            
             Exportando.fechar();
+            
         } catch( Exception e ){ Exportando.fechar(); e.printStackTrace(); } } }.start();
     }//GEN-LAST:event_jLabel15MousePressed
   

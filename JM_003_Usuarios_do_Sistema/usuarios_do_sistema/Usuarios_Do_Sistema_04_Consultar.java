@@ -4,6 +4,11 @@ package usuarios_do_sistema;
 import Sons.Som;
 import br.com.jmary.home.Home;
 import br.com.jmary.home.imagens.Imagens_Internas;
+import java.awt.Color;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -15,10 +20,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.Timer;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import br.com.jmary.home.jpa.DAOGenericoJPA;
+import br.com.jmary.home.jpa.DB;
 import br.com.jmary.home.jpa.DB_Bean;
 import br.com.jmary.home.jpa.JPAUtil;
 import br.com.jmary.utilidades.Arquivo_Ou_Pasta;
@@ -27,13 +37,21 @@ import br.com.jmary.utilidades.ImportarExportarExcel;
 import br.com.jmary.utilidades.JFileChooserJM;
 import br.com.jmary.utilidades.JOPM;
 import controle_de_acesso.Controle_De_Acesso_02_Cadastrar_Visualizar;
+import controle_de_acesso.Verificar_Autorizacao;
+import home_controle_menus_norte.imagens.Imagens_Menu_Norte;
 import java.awt.HeadlessException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.util.List;
 import javax.persistence.Query;
+import javax.swing.JTabbedPane;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -61,7 +79,6 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
     JPanel PerguntaX = new JPanel();
     
     Home Home;
-    Controle_De_Acesso_02_Cadastrar_Visualizar Controle_De_Acesso_02_Cadastrar_Visualizar;
     
     /** Creates new form SombraVendas
      * @param Home2 */
@@ -69,8 +86,6 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
         initComponents();
         
         Home = Home2;
-        lb_Controle_de_Acesso2.setVisible(false);
-        jp_Controle_de_Acesso.setVisible(true);
         
         PerguntaX = Pergunta;
         
@@ -82,30 +97,43 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
         
         //setar_DefaultTableModel_tbPreferedSize(1);  
         setar_DefaultTableModel_tmPesquisa(1);
+        
+        selecionar_usuario = false;
+        lbSelecionar.setVisible(false);
+        lbVisualizar.setVisible(true);
+        lbDesativar.setVisible(true);
+        lbEditar.setVisible(true);
     }
     
-    String selecionar_externo = "";
-    //Controle_De_Acesso_02_Cadastrar_Visualizar
-    public Usuarios_Do_Sistema_04_Consultar( Home Home2, Controle_De_Acesso_02_Cadastrar_Visualizar Controle_De_Acesso_02_Cadastrar_Visualizar2 ) {
+    JTabbedPane jTabselecionar_usuario;
+    boolean selecionar_usuario = false;
+    Controle_De_Acesso_02_Cadastrar_Visualizar Controle_De_Acesso_02_Cadastrar_Visualizar;
+    public Usuarios_Do_Sistema_04_Consultar( Home Home2, JTabbedPane jTabselecionar_usuario2, Controle_De_Acesso_02_Cadastrar_Visualizar Controle_De_Acesso_02_Cadastrar_Visualizar2 ) {
         initComponents();
         
-        selecionar_externo = "controle_de_acesso";
-        
         Home = Home2;
-        jp_Controle_de_Acesso.setVisible(false);
-        lb_Controle_de_Acesso.setVisible(true);
-        Controle_De_Acesso_02_Cadastrar_Visualizar = Controle_De_Acesso_02_Cadastrar_Visualizar2;
         
+        /*
         PerguntaX = Pergunta;
         
         Home.ControleTabs.removerTabSemControleSelecionadoPeloNome(jTabbedPane1,Pergunta);
         inserirTab_Interna_Ajuda();
+        */
         
         setarUrl_e_ImageIcon_Seta_Inicio();
         tabelaInicio();   
         
         //setar_DefaultTableModel_tbPreferedSize(1);  
         setar_DefaultTableModel_tmPesquisa(1);
+        
+        jTabselecionar_usuario = jTabselecionar_usuario2;        
+        Controle_De_Acesso_02_Cadastrar_Visualizar = Controle_De_Acesso_02_Cadastrar_Visualizar2;
+        
+        selecionar_usuario = true;
+        lbSelecionar.setVisible(true);
+        lbVisualizar.setVisible(false);
+        lbDesativar.setVisible(false);
+        lbEditar.setVisible(false);
     }
     
     private ListSelectionModel               lsmPesquisa;
@@ -202,11 +230,10 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
         JPOpcao_5 = new javax.swing.JPanel();
         jTextArea5 = new javax.swing.JTextArea();
         jComboBox2 = new javax.swing.JComboBox();
-        jp_Controle_de_Acesso = new javax.swing.JPanel();
+        lbEditar = new javax.swing.JLabel();
         lbDesativar = new javax.swing.JLabel();
         lbVisualizar = new javax.swing.JLabel();
-        lbEditar = new javax.swing.JLabel();
-        lb_Controle_de_Acesso = new javax.swing.JLabel();
+        lbSelecionar = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(832, 504));
@@ -646,6 +673,16 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
             }
         });
 
+        lbEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home_controle_menus_norte/imagens/livroTp.png"))); // NOI18N
+        lbEditar.setToolTipText("Editar");
+        lbEditar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lbEditar.setEnabled(false);
+        lbEditar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lbEditarMousePressed(evt);
+            }
+        });
+
         lbDesativar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home_controle_menus_norte/imagens/exluir.png"))); // NOI18N
         lbDesativar.setToolTipText("Excluir");
         lbDesativar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -666,43 +703,13 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
             }
         });
 
-        lbEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home_controle_menus_norte/imagens/livroTp.png"))); // NOI18N
-        lbEditar.setToolTipText("Editar");
-        lbEditar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lbEditar.setEnabled(false);
-        lbEditar.addMouseListener(new java.awt.event.MouseAdapter() {
+        lbSelecionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home_controle_menus_norte/imagens/conexao.png"))); // NOI18N
+        lbSelecionar.setToolTipText("Visualizar");
+        lbSelecionar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lbSelecionar.setEnabled(false);
+        lbSelecionar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                lbEditarMousePressed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jp_Controle_de_AcessoLayout = new javax.swing.GroupLayout(jp_Controle_de_Acesso);
-        jp_Controle_de_Acesso.setLayout(jp_Controle_de_AcessoLayout);
-        jp_Controle_de_AcessoLayout.setHorizontalGroup(
-            jp_Controle_de_AcessoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jp_Controle_de_AcessoLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lbEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbDesativar, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbVisualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        jp_Controle_de_AcessoLayout.setVerticalGroup(
-            jp_Controle_de_AcessoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jp_Controle_de_AcessoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jp_Controle_de_AcessoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(lbEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lbDesativar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
-                    .addComponent(lbVisualizar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-
-        lb_Controle_de_Acesso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home_controle_menus_norte/imagens/conexao.png"))); // NOI18N
-        lb_Controle_de_Acesso.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                lb_Controle_de_AcessoMousePressed(evt);
+                lbSelecionarMousePressed(evt);
             }
         });
 
@@ -724,9 +731,14 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
                             .addComponent(jComboBox2, 0, 127, Short.MAX_VALUE))
                         .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addComponent(jp_Controle_de_Acesso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(lbEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lbDesativar, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addComponent(lbVisualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lb_Controle_de_Acesso)))
+                        .addComponent(lbSelecionar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
@@ -743,10 +755,12 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
                         .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jp_Controle_de_Acesso, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(lb_Controle_de_Acesso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbDesativar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbVisualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbSelecionar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1285,7 +1299,7 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
 
             if( jLabel7.isEnabled() == true ) { jLabel7.setEnabled(false);
 
-                JFileChooserJM JFileChooserJM = new JFileChooserJM( "  imagens    -   jmarysystems.blogspot.com.br", new String [] { "XLS" , "XLSX" } );
+                JFileChooserJM JFileChooserJM = new JFileChooserJM( "  imagens    -   www.jmarysystems.com.br", new String [] { "XLS" , "XLSX" } );
                 String strdevolvida = JFileChooserJM.getString( 2 );
 
                 //tfPesquisa.setText( strdevolvida );
@@ -1339,6 +1353,31 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
     }//GEN-LAST:event_jLabel3MousePressed
 
     private void jButton6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MousePressed
+        try {
+                                    
+            try {
+                
+                if( jButton6.isEnabled() == true ){
+                    
+                    jButton6.setEnabled(false);
+                    
+                    Verificar_Autorizacao Verificar_Autorizacao = new Verificar_Autorizacao();
+                    if( Verificar_Autorizacao.verificar("USUARIO_SISTEMA", "CONSULTAR") == true ){
+                
+                        consultar();
+                    }
+                    else{                        
+                        Verificar_Autorizacao.sem_acesso();
+                    }
+                }
+            } catch( Exception e ){}
+            
+            jButton6.setEnabled(true);
+            
+        } catch( Exception e ){} 
+    }//GEN-LAST:event_jButton6MousePressed
+
+    private void consultar() {                                      
         new Thread() {   @Override public void run() { try { Thread.sleep( 1 );
         
         String tipoConsulta = "";
@@ -1386,7 +1425,8 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
                 
                 List<UsuarioSistema> UsuarioSistema = null;
                 try{ 
-                    Query q = JPAUtil.em().createNativeQuery("SELECT * FROM JM.USUARIO_SISTEMA", UsuarioSistema.class );
+                    
+                    Query q = JPAUtil.em().createNativeQuery("SELECT * FROM " + Banco_Ctrl_Tabela_BD.get(), UsuarioSistema.class );
                     List<UsuarioSistema> lista_Banco = q.getResultList();   
                     UsuarioSistema = lista_Banco;
                 }catch( Exception e ){ }
@@ -1419,13 +1459,20 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
             
             if( tipoConsulta.equals("SQL") ){
                 
-                tabelaResultSet(contentsX);
+                Verificar_Autorizacao Verificar_Autorizacao = new Verificar_Autorizacao();
+                if( Verificar_Autorizacao.verificar("USUARIO_SISTEMA", "CONSULTA_SQL") == true ){
+                
+                    tabelaResultSet(contentsX);
+                }
+                else{
+                        
+                    Verificar_Autorizacao.sem_acesso();
+                }
             }            
             else{
                 
                 try{                                                                            
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
-                    long start = System.currentTimeMillis();
                     
                     StringTokenizer stX=new StringTokenizer(contentsX,"\n");                
                     ///////////////////////////////////////////////////////////////
@@ -1456,13 +1503,6 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
                     Exportando.pbg.setMaximum(countLinha );
                     System.out.println("QTD. Linhas: "+countLinha + " - QTD. Colunas: "+countColuna);
                     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    
-                    long elapsed = System.currentTimeMillis();
-                    long total = elapsed - start;
-                    //Para ver em segundos, divida por 1000, em minutos, por 60000
-                    System.out.println( "Tempo inicial: " + start );
-                    System.out.println( "Tempo final: " + elapsed );
-                    System.out.println( "Tempo para executar em segundos: " + total/1000 );
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////      
 
                     StringTokenizer st1=new StringTokenizer(contentsX,"\n");
@@ -1485,7 +1525,7 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
                                     
                                     DAOGenericoJPA DAOGenericoJPAXX = new DAOGenericoJPA(UsuarioSistema.class, JPAUtil.em());
                                     UsuarioSistema = (List<UsuarioSistema>) DAOGenericoJPAXX.getBeansCom_1_Parametro(UsuarioSistema.class, 
-                                            "SELECT * FROM JM.USUARIO_SISTEMA WHERE CODIGO_AUXILIAR = ?", material_procurado );
+                                            "SELECT * FROM " + Banco_Ctrl_Tabela_BD.get() + " WHERE CODIGO_AUXILIAR = ?", material_procurado );
                                 }catch( Exception e ){ }
                                     
                                 String rbusca = ""; try{ rbusca = UsuarioSistema.get(0).getLogin(); }catch( Exception e ){}
@@ -1506,7 +1546,7 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
                                 try{ 
                                     DAOGenericoJPA DAOGenericoJPAXX = new DAOGenericoJPA(UsuarioSistema.class, JPAUtil.em());
                                     UsuarioSistema = (List<UsuarioSistema>) DAOGenericoJPAXX.getBeansCom_1_Parametro(UsuarioSistema.class, 
-                                            "SELECT * FROM JM.USUARIO_SISTEMA WHERE ID = ?", material_procurado );
+                                            "SELECT * FROM " + Banco_Ctrl_Tabela_BD.get() + " WHERE ID = ?", material_procurado );
                                 }catch( Exception e ){ }
                                     
                                 String rbusca = ""; try{ rbusca = UsuarioSistema.get(0).getLogin(); }catch( Exception e ){}
@@ -1527,7 +1567,7 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
                                 try{ 
                                     DAOGenericoJPA DAOGenericoJPAXX = new DAOGenericoJPA(UsuarioSistema.class, JPAUtil.em());
                                     UsuarioSistema = (List<UsuarioSistema>) DAOGenericoJPAXX.getBeansCom_1_Parametro(UsuarioSistema.class, 
-                                            "SELECT * FROM JM.USUARIO_SISTEMA WHERE LOGIN LIKE ?", material_procurado.toUpperCase() );
+                                            "SELECT * FROM " + Banco_Ctrl_Tabela_BD.get() + " WHERE LOGIN LIKE ?", material_procurado.toUpperCase() );
                                 }catch( Exception e ){ }
                                     
                                 String rbusca = ""; try{ rbusca = UsuarioSistema.get(0).getLogin(); }catch( Exception e ){}
@@ -1549,7 +1589,7 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
                             else if( tipoConsulta.equals("TUDO") ){
                                 
                                 try{ 
-                                    Query q = JPAUtil.em().createNativeQuery("SELECT * FROM JM.USUARIO_SISTEMA", UsuarioSistema.class );
+                                    Query q = JPAUtil.em().createNativeQuery("SELECT * FROM " + Banco_Ctrl_Tabela_BD.get(), UsuarioSistema.class );
                                     List<UsuarioSistema> lista_Banco = q.getResultList();   
                                     UsuarioSistema = lista_Banco;
                                 }catch( Exception e ){ }
@@ -1595,13 +1635,12 @@ public class Usuarios_Do_Sistema_04_Consultar extends javax.swing.JPanel {
         e.printStackTrace();
         JOPM JOptionPaneMod = new JOPM( 2, "CONEXÃO COM BANCO DE DADOS, "
                 + "\nERRO NA CONEXÃO"
-                + "\nurlAlone: " + DB_Bean.urlAlone
-                + "\nurlNetwork: " + DB_Bean.urlNetwork
+                + "\nurl: " + DB_Bean.url
                 + "\nCONEXÃO NÃO ESTABELECIDA"
                 + "\n", "CONEXÃO COM BANCO DE DADOS" );    
     } } }.start();  
-    }//GEN-LAST:event_jButton6MousePressed
-
+    } 
+    
 private void setar_na_tabela(UsuarioSistema UsuarioSistema){
         try{      
             
@@ -1701,7 +1740,7 @@ private void setar_na_tabela(UsuarioSistema UsuarioSistema){
                     
                     List<UsuarioSistema> List_2_UsuarioSistema = null;
                     try{
-                        Query q2 = JPAUtil.em().createNativeQuery("SELECT * FROM JM.USUARIO_SISTEMA WHERE ID = ?", UsuarioSistema.class );
+                        Query q2 = JPAUtil.em().createNativeQuery("SELECT * FROM " + Banco_Ctrl_Tabela_BD.get() + " WHERE ID = ?", UsuarioSistema.class );
                         q2.setParameter( 1, id ); 
                         List_2_UsuarioSistema = q2.getResultList();
                     }catch(Exception e){}
@@ -1756,7 +1795,7 @@ private void setar_na_tabela(UsuarioSistema UsuarioSistema){
                     
                     List<UsuarioSistema> List_2_UsuarioSistema = null;
                     try{
-                        Query q2 = JPAUtil.em().createNativeQuery("SELECT * FROM JM.USUARIO_SISTEMA WHERE ID = ?", UsuarioSistema.class );
+                        Query q2 = JPAUtil.em().createNativeQuery("SELECT * FROM " + Banco_Ctrl_Tabela_BD.get() + " WHERE ID = ?", UsuarioSistema.class );
                         q2.setParameter( 1, id ); 
                         List_2_UsuarioSistema = q2.getResultList();
                     }catch(Exception e){}
@@ -1778,20 +1817,29 @@ private void setar_na_tabela(UsuarioSistema UsuarioSistema){
                         }
                         else{
                             
-                            excluir_Imagens( List_2_UsuarioSistema.get(0) );
+                            Verificar_Autorizacao Verificar_Autorizacao = new Verificar_Autorizacao();
+                            if( Verificar_Autorizacao.verificar("USUARIO_SISTEMA", "EXCLUIR") == true ){
+                    
+                                excluir_Imagens( List_2_UsuarioSistema.get(0) );
                             
-                            DAOGenericoJPA DAOGenericoJPA2 = new DAOGenericoJPA( List_2_UsuarioSistema.get(0), JPAUtil.em());
-                            DAOGenericoJPA2.excluir();
+                                DAOGenericoJPA DAOGenericoJPA2 = new DAOGenericoJPA( List_2_UsuarioSistema.get(0), JPAUtil.em());
+                                DAOGenericoJPA2.excluir();
                         
-                            tmPesquisa.removeRow( linhaSelecionada );
+                                tmPesquisa.removeRow( linhaSelecionada );
                         
-                            Class<Imagens_Internas> clazzHome = Imagens_Internas.class;
-                            JOPM JOptionPaneMod = new JOPM( 1, "EXCLUINDO USUÁRIO SELECIONADO\n"
-                                + "\nUSUÁRIO: " + rbusca 
-                               + "\nEXCLUIDO COM SUCESSO"
-                                + "\nOK Para Prosseguir"
-                                ,"Class: " + this.getClass().getName(),
-                            new ImageIcon( clazzHome.getResource("logocangaco2.png")) );                        
+                                Class<Imagens_Internas> clazzHome = Imagens_Internas.class;
+                                JOPM JOptionPaneMod = new JOPM( 1, "EXCLUINDO USUÁRIO SELECIONADO\n"
+                                    + "\nUSUÁRIO: " + rbusca 
+                                    + "\nEXCLUIDO COM SUCESSO"
+                                    + "\nOK Para Prosseguir"
+                                    ,"Class: " + this.getClass().getName(),
+                                new ImageIcon( clazzHome.getResource("logocangaco2.png")) );
+                            }
+                            else{            
+                                
+                                Verificar_Autorizacao.sem_acesso();
+                            }                            
+                                                    
                         }
                     }
                     
@@ -1817,7 +1865,7 @@ private void setar_na_tabela(UsuarioSistema UsuarioSistema){
              
         List<UsuarioImagens> lista_Banco = null;
         try{ 
-            Query q = JPAUtil.em().createNativeQuery("SELECT * FROM JM.USUARIO_IMAGENS WHERE ID_USUARIO_SISTEMA = ?", UsuarioImagens.class );
+            Query q = JPAUtil.em().createNativeQuery("SELECT * FROM " + Banco_Ctrl_Tabela_BD.get_imagem() + " WHERE ID_USUARIO_SISTEMA = ?", UsuarioImagens.class );
             q.setParameter( 1, UsuarioSistema_Excluir_Imagens.getId() );
             lista_Banco = q.getResultList();   
         }catch( Exception e ){ }
@@ -1864,7 +1912,7 @@ private void setar_na_tabela(UsuarioSistema UsuarioSistema){
                     
                     List<UsuarioSistema> List_2_UsuarioSistema = null;
                     try{
-                        Query q2 = JPAUtil.em().createNativeQuery("SELECT * FROM JM.USUARIO_SISTEMA WHERE ID = ?", UsuarioSistema.class );
+                        Query q2 = JPAUtil.em().createNativeQuery("SELECT * FROM " + Banco_Ctrl_Tabela_BD.get() + " WHERE ID = ?", UsuarioSistema.class );
                         q2.setParameter( 1, id ); 
                         List_2_UsuarioSistema = q2.getResultList();
                     }catch(Exception e){}
@@ -1893,29 +1941,66 @@ private void setar_na_tabela(UsuarioSistema UsuarioSistema){
         } catch( InterruptedException e ){ Exportando.fechar(); e.printStackTrace(); } } }.start();        
     }//GEN-LAST:event_lbVisualizarMousePressed
 
-    private void lb_Controle_de_AcessoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lb_Controle_de_AcessoMousePressed
-        try{  
+    private void lbSelecionarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbSelecionarMousePressed
+        
+        selecionar_Usuario();
+ 
+    }//GEN-LAST:event_lbSelecionarMousePressed
+    
+    private void selecionar_Usuario() {                                          
+        new Thread() {   @Override public void run() { try { Thread.sleep( 1 );
+                                
+            if ( tbPesquisa.getSelectedRow() != -1){
+                Exportando = new Exportando("ABRINDO...");
+                Exportando.setVisible(true);Exportando.pbg.setMinimum(0);
+                Exportando.pbg.setMaximum( 100 );
+                Exportando.pbg.setValue( 50 );
+                
+                if( lbVisualizar.isEnabled() == true ){
             
-            switch( selecionar_externo ){
-                case "controle_de_acesso": 
-                    Controle_De_Acesso_02_Cadastrar_Visualizar;
-                break;
+                    List<UsuarioSistema>  List_UsuarioSistema = null;
+                    int id = 0;
+                    
+                    try{ 
+                        int linhaSelecionada = tbPesquisa.getSelectedRow();//pegar a linha selecionada  
+                        id = (int) tbPesquisa.getValueAt(linhaSelecionada, 0);//pegar os valores da linha e coluna 
+                    }catch(Exception e){}
+                    
+                    System.out.println("ID DA TABELA SELECIONADA: " + id);
+                    
+                    List<UsuarioSistema> List_2_UsuarioSistema = null;
+                    try{
+                        Query q2 = JPAUtil.em().createNativeQuery("SELECT * FROM " + Banco_Ctrl_Tabela_BD.get() + " WHERE ID = ?", UsuarioSistema.class );
+                        q2.setParameter( 1, id ); 
+                        List_2_UsuarioSistema = q2.getResultList();
+                    }catch(Exception e){}
+                    
+                    String rbusca = ""; try{ rbusca = List_2_UsuarioSistema.get(0).getLogin(); }catch( Exception e ){}
+                    if( !rbusca.equals("") ){
+                        
+                        Controle_De_Acesso_02_Cadastrar_Visualizar.tf_USUARIO.setText( List_2_UsuarioSistema.get(0).getLogin() );
+                        Controle_De_Acesso_02_Cadastrar_Visualizar.UsuarioSistemaQueVaiAcessar = List_2_UsuarioSistema.get(0);       
+                        
+                        Home.ControleTabs.removerTabSemControleSelecionado(jTabselecionar_usuario);
+                    }
+                    
+                    Exportando.fechar();
+                }
             }
-        }
-        else{
-
-            Class<Imagens_Internas> clazzHome = Imagens_Internas.class;
-            JOPM JOptionPaneMod = new JOPM( 1, "FILTRA TABELA\n"
-
-                + "\nPara filtrar dados da tabela 1º selecione uma célula\n"
-                + "\nOK Para Prosseguir"
-                ,"Class: " + this.getClass().getName(),
-                new ImageIcon( clazzHome.getResource("logocangaco2.png")) );
-        }
+            else{
+                
+                Class<Imagens_Internas> clazzHome = Imagens_Internas.class;
+                JOPM JOptionPaneMod = new JOPM( 1, "SELECIONAR USUÁRIO SELECIONADO\n"
+                        + "\nPARA SELECIONAR USUÁRIO\n"
+                        + "\nPRIMEIRO SELECIONE UMA CÉLULA\n"
+                        + "\nOK Para Prosseguir"
+                        ,"Class: " + this.getClass().getName(),
+                        new ImageIcon( clazzHome.getResource("logocangaco2.png")) );
+            }
             
-            
-        } catch( Exception e ){}
-    }//GEN-LAST:event_lb_Controle_de_AcessoMousePressed
+        } catch( InterruptedException e ){ Exportando.fechar(); e.printStackTrace(); } } }.start();        
+    }
+    
     private void setarUrl_e_ImageIcon_Seta_Inicio(){
         try{                       
             
@@ -2014,23 +2099,34 @@ private void setar_na_tabela(UsuarioSistema UsuarioSistema){
             
             if ( tbPesquisa.getSelectedRow() != -1){               
 
+                lbEditar        .setEnabled(true);
+                lbDesativar     .setEnabled(true);
+                lbVisualizar    .setEnabled(true);
                 lb_Exportar_Exel.setEnabled(true);
                 lb_Impressora.setEnabled(true);
                 
-                if( jp_Controle_de_Acesso.isVisible() ){
-                    
-                    lbEditar        .setEnabled(true);
-                    lbDesativar     .setEnabled(true);
-                    lbVisualizar    .setEnabled(true);   
+                if( selecionar_usuario == true ){
+                    lbSelecionar.setEnabled(true);
+                    lbSelecionar.setVisible(true);
+                    lbVisualizar.setVisible(false);
+                    lbDesativar.setVisible(false);
+                    lbEditar.setVisible(false);
                 }
-            } else{                  
-                                
-                lb_Exportar_Exel.setEnabled(false);
-                lb_Impressora.setEnabled(false);
-                
+                else{
+                    lbSelecionar.setEnabled(false);
+                    lbSelecionar.setVisible(false);
+                    lbVisualizar.setVisible(true);
+                    lbDesativar.setVisible(true);
+                    lbEditar.setVisible(true);
+                }
+
+            } else{
+                    
                 lbEditar     .setEnabled(false);
                 lbDesativar .setEnabled(false);
                 lbVisualizar.setEnabled(false);
+                lb_Exportar_Exel.setEnabled(false);
+                lb_Impressora.setEnabled(false);
             }
         } catch( Exception e ) {}
     }
@@ -2067,7 +2163,6 @@ private void setar_na_tabela(UsuarioSistema UsuarioSistema){
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextArea jTextArea5;
     private javax.swing.JTextPane jTextPane1;
-    private javax.swing.JPanel jp_Controle_de_Acesso;
     private javax.swing.JPanel jp_Opcoes;
     private javax.swing.JPanel jp_Opcoes_Tabela;
     private javax.swing.JPanel jp_Opcoes_Tabela2;
@@ -2077,8 +2172,8 @@ private void setar_na_tabela(UsuarioSistema UsuarioSistema){
     public javax.swing.JLabel lbFiltro1;
     public javax.swing.JLabel lbFiltro2;
     private javax.swing.JLabel lbLinha_Tabela;
+    private javax.swing.JLabel lbSelecionar;
     private javax.swing.JLabel lbVisualizar;
-    private javax.swing.JLabel lb_Controle_de_Acesso;
     private javax.swing.JLabel lb_Exportar_Exel;
     private javax.swing.JLabel lb_Impressora;
     public javax.swing.JTable tbPesquisa;
@@ -2278,7 +2373,7 @@ private void setar_na_tabela(UsuarioSistema UsuarioSistema){
             rs = null;
             
             try{
-                String queryX = "SELECT * FROM JM."+tabela+" WHERE "+ colunaParaProcurar +" = '"+busca+"'";
+                String queryX = "SELECT * FROM " + Banco_Ctrl_Tabela_BD.get_schema() + tabela + " WHERE "+ colunaParaProcurar +" = '"+busca+"'";
                 DB = new DB();
                 con = null; try{ con = DB.derby();             }catch(Exception e){}    
                 stmt = null; try{ stmt = con.createStatement(); }catch(Exception e){}        

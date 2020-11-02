@@ -1492,8 +1492,7 @@ public class Usuarios_Do_Sistema_03_Cadastro_Automatizado extends javax.swing.JP
         e.printStackTrace();
         JOPM JOptionPaneMod = new JOPM( 2, "CONEXÃO COM BANCO DE DADOS, "
                 + "\nERRO NA CONEXÃO"
-                + "\nurlAlone: " + DB_Bean.urlAlone
-                + "\nurlNetwork: " + DB_Bean.urlNetwork
+                + "\nurl: " + DB_Bean.url
                 + "\nCONEXÃO NÃO ESTABELECIDA"
                 + "\n", "CONEXÃO COM BANCO DE DADOS" );    
     } } }.start();  

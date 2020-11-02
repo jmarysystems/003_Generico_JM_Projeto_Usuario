@@ -7,6 +7,8 @@
 package usuarios_do_sistema_menu_e_submenu;
 
 import br.com.jmary.home.Home;
+import br.com.jmary.utilidades.Exportando;
+import controle_de_acesso.Verificar_Autorizacao;
 import usuarios_do_sistema.Usuarios_Do_Sistema_01_Indice;
 
 /**
@@ -96,13 +98,26 @@ public class Usuarios_do_Sistema_Submenu_01 extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    Exportando Exportando;
     private void btExercicios5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btExercicios5MousePressed
-        
-        new Thread() {   @Override public void run() { try { Thread.sleep( 1 );
-
-            Home.ControleTabs.AddTabsAoHome("Usuários do Sistema Índice", "livroTp.gif", new Usuarios_Do_Sistema_01_Indice(Home) ); 
-
-        } catch( Exception e ){ } } }.start();
+        new Thread() {   @Override public void run() { try { 
+            Exportando = new Exportando("ABRINDO...");
+            Exportando.setVisible(true);Exportando.pbg.setMinimum(0);
+            Exportando.pbg.setMaximum( 100 );
+            Exportando.pbg.setValue( 50 );           
+            
+            Verificar_Autorizacao Verificar_Autorizacao = new Verificar_Autorizacao();
+            if( Verificar_Autorizacao.verificar("USUARIO_SISTEMA", "ACESSO_A_TABELA") == true ){
+                
+                Home.ControleTabs.AddTabsAoHome("Usuários do Sistema Índice", "livroTp.gif", new Usuarios_Do_Sistema_01_Indice(Home) );
+            }
+            else{            
+                Verificar_Autorizacao.sem_acesso();
+            }
+            
+            Exportando.fechar();
+            
+        } catch( Exception e ){ Exportando.fechar(); e.printStackTrace(); } } }.start();
         
     }//GEN-LAST:event_btExercicios5MousePressed
 

@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 import br.com.jmary.utilidades.JOPM;
 import br.com.jmary.utilidades.PopupMenu_Colar;
 import br.com.jmary.utilidades.ValidarEmail;
+import controle_de_acesso.Verificar_Autorizacao;
 import home_controle_menus_norte.imagens.Imagens_Menu_Norte;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.persistence.Query;
@@ -42,7 +44,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
     
     Home Home;
     String status_cadastro;
-    UsuarioSistema UsuarioSistema_Recebido;
+    UsuarioSistema Classe_Bean_Recebida;
     JTabbedPane JTabbedPane_Recebido;
     PopupMenu_Colar PopupMenu_Colar;
     
@@ -67,7 +69,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
         
         Home = Home2;  
         status_cadastro = status_cadastro2;
-        UsuarioSistema_Recebido = UsuarioSistema_Recebido2;
+        Classe_Bean_Recebida = UsuarioSistema_Recebido2;
         JTabbedPane_Recebido = JTabbedPane_Recebido2;
         
         setar_Dados_Iniciais();
@@ -113,15 +115,15 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
         
         List<UsuarioImagens> UsuarioImagens = null;
         try{ 
-            Query q = JPAUtil.em().createNativeQuery("SELECT * FROM JM.USUARIO_IMAGENS WHERE ID_USUARIO_SISTEMA = ?", UsuarioImagens.class );
-            q.setParameter( 1, UsuarioSistema_Recebido.getId() );
+            Query q = JPAUtil.em().createNativeQuery("SELECT * FROM " + Banco_Ctrl_Tabela_BD.get_imagem() + " WHERE ID_USUARIO_SISTEMA = ?", UsuarioImagens.class );
+            q.setParameter(1, Classe_Bean_Recebida.getId() );
             List<UsuarioImagens> lista_Banco = q.getResultList();   
             UsuarioImagens = lista_Banco;
             
-            System.out.println("setarImagem_Principal() - " + UsuarioSistema_Recebido.getId() +" - "+UsuarioSistema_Recebido.getLogin());
+            System.out.println("setarImagem_Principal() - " + Classe_Bean_Recebida.getId() +" - "+Classe_Bean_Recebida.getLogin());
         }catch( Exception e ){
             
-            System.out.println("List<UsuarioImagens> UsuarioImagens - Erro - " + UsuarioSistema_Recebido.getId() +" - "+UsuarioSistema_Recebido.getLogin());
+            System.out.println("List<UsuarioImagens> UsuarioImagens - Erro - " + Classe_Bean_Recebida.getId() +" - "+Classe_Bean_Recebida.getLogin());
             e.printStackTrace();
         }
         
@@ -253,6 +255,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
         jLabel80 = new javax.swing.JLabel();
         JPOpcao_27 = new javax.swing.JPanel();
         tf_Email = new javax.swing.JTextField();
+        btSalvar1 = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         chPermitirAcessar = new javax.swing.JCheckBox();
         jpPermitirAcesso7 = new javax.swing.JPanel();
@@ -805,7 +808,6 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             .addComponent(jLabel78, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
         );
 
-        JPOpcao_25.setBackground(new java.awt.Color(255, 255, 255));
         JPOpcao_25.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(153, 0, 153)));
         JPOpcao_25.setPreferredSize(new java.awt.Dimension(284, 27));
         JPOpcao_25.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -820,6 +822,8 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             }
         });
 
+        tfCodigoAuxiliar.setEditable(false);
+        tfCodigoAuxiliar.setBackground(new java.awt.Color(240, 240, 240));
         tfCodigoAuxiliar.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         tfCodigoAuxiliar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(201, 239, 237), 1, true));
         tfCodigoAuxiliar.setPreferredSize(new java.awt.Dimension(209, 25));
@@ -865,7 +869,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
                 .addComponent(JPOpcao_24, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(JPOpcao_25, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(99, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         jPanel27Layout.setVerticalGroup(
             jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -962,7 +966,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
                 .addComponent(JPOpcao_26, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(JPOpcao_27, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(99, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel28Layout.setVerticalGroup(
             jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -970,22 +974,36 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             .addComponent(JPOpcao_26, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
+        btSalvar1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btSalvar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home_controle_menus_norte/imagens/menuCiênciasExatasQuimica.png"))); // NOI18N
+        btSalvar1.setText("Validar Email");
+        btSalvar1.setPreferredSize(new java.awt.Dimension(185, 31));
+        btSalvar1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btSalvar1MousePressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel27, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel28, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(227, Short.MAX_VALUE))
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btSalvar1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(135, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel28, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel28, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btSalvar1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel27, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -1351,7 +1369,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(58, Short.MAX_VALUE))
@@ -1631,7 +1649,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             Exportando.pbg.setValue( 50 ); 
             
             Home.ControleTabs.AddTabComControle(jTabbedPane1, "Visualizador Imagens Banco de Dados", "livroTp.gif", 
-                        new Visualizador_Banco_de_Dados(Home, UsuarioSistema_Recebido.getId(), status_cadastro, this) );   
+                        new Visualizador_Banco_de_Dados(Home, Classe_Bean_Recebida.getId(), status_cadastro, this) );   
             
             Exportando.fechar();  
         }      
@@ -1837,7 +1855,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
         
         if(status_cadastro.equalsIgnoreCase("Cadastrando...")){
             
-/* ////// */UsuarioSistema_Recebido = new UsuarioSistema();
+/* ////// */Classe_Bean_Recebida = new UsuarioSistema();
       
             Exportando = new Exportando("CADASTRANDO");
             Exportando.setVisible(true);
@@ -1846,7 +1864,8 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             
             Exportando.pbg.setValue( 50 ); 
             
-            verificando_se_o_usuario_e_o_Cleilson();  
+            //verificando_se_o_usuario_e_o_Cleilson(); 
+            verificar_validacao_de_email();
             
             Exportando.fechar();             
         }
@@ -1859,7 +1878,8 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             
             Exportando.pbg.setValue( 50 ); 
             
-            verificando_se_o_usuario_e_o_Cleilson();  
+            //verificando_se_o_usuario_e_o_Cleilson();  
+            verificar_validacao_de_email();
             
             Exportando.fechar();  
         }
@@ -1868,7 +1888,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
         List<UsuarioSistema> UsuarioSistema = null;
         try{ 
             Query q = JPAUtil.em().createNativeQuery("SELECT * FROM JM.USUARIO_SISTEMA WHERE ID = ?", UsuarioSistema.class );
-            q.setParameter( 1, UsuarioSistema_Recebido.getId() );
+            q.setParameter( 1, Classe_Bean_Recebida.getId() );
             List<UsuarioSistema> lista_Banco = q.getResultList();   
             UsuarioSistema = lista_Banco;
         }catch( Exception e ){ }
@@ -1909,8 +1929,17 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
 //////////////////////////////////////////////////////
             if(n==0){
         
-                excluir_Usuario_Atual();
-            }            
+                Verificar_Autorizacao Verificar_Autorizacao = new Verificar_Autorizacao();
+                if( Verificar_Autorizacao.verificar("USUARIO_SISTEMA", "EXCLUIR") == true ){
+                    
+                    excluir_Item_Atual();
+                }
+                else{            
+                    
+                    Verificar_Autorizacao.sem_acesso();
+                }           
+                
+            }           
         } catch( Exception e ){} 
     }//GEN-LAST:event_btExcluirMousePressed
 
@@ -1925,8 +1954,85 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             PopupMenu_Colar = new PopupMenu_Colar(tfCodigoAuxiliar);
         } catch( Exception e ){} 
     }//GEN-LAST:event_tfCodigoAuxiliarMouseClicked
-      
-    private void excluir_Usuario_Atual() {                                       
+
+    String validador = "";
+    private void btSalvar1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btSalvar1MousePressed
+        try{
+            if( !tf_Email.getText().trim().equals("") ){
+                        
+            new Thread() {   @Override public void run() { try { 
+                
+                Calendar calendar = Calendar.getInstance();
+                java.util.Date now = calendar.getTime();
+                java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(now.getTime());
+                DateFormat dfmt = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+                String dataCadastro = ""; 
+                try{ dataCadastro = dfmt.format(currentTimestamp);  }catch(Exception e){}
+            
+                StringBuilder stb = new StringBuilder();
+                Random gerador = new Random();
+                for (int i = 0; i < 2; i++) {
+                   stb.append( gerador.nextInt() );
+                }
+            
+                validador = dataCadastro.trim() + "-" + stb.toString().trim();
+            
+                enviar_mensagem( 
+                        "jmarysystems0003@gmail.com", "282.23071354.282",
+                        tf_Email.getText().trim(), "VALIDAR EMAIL JMARYSYSTEMS", 
+                        "Seu código de validação é: " + validador );
+            
+            } catch( Exception e ){  } } }.start();
+            
+            String text =  "VERIFICAR VALIDAÇÃO DO EMAIL\n"
+                            + "\n1º ACESSE SEU EMAIL:" 
+                            + "\n2º PEGUE O CÓDIGO QUE LHE FOI ENVIADO"
+                            + "\n3º DIGITE ELE AQUI PARA VALIDAR";
+            
+            String str = "";
+            try{ 
+                str = (String) JOptionPane.showInputDialog(Home,text,"Class: " + this.getClass().getName(),JOptionPane.INFORMATION_MESSAGE,icon,null,"");
+            } catch( Exception e ){}
+            
+            if( validador.equals( str.trim() ) ){
+                
+                tfCodigoAuxiliar.setText(validador);
+            }
+  
+        }
+        else{
+                
+                Class<Imagens_Internas> clazzHome = Imagens_Internas.class;
+                    JOPM JOptionPaneMod = new JOPM( 1, "VERIFICAR VALIDAÇÃO DO EMAIL\n"
+                    + "\n"
+                    + "\nSTATUS DA VALIDAÇÃO"
+                    + "\n"
+                    + "\nEMAIL NÃO INFORMADO\n"
+                    + "\nINFORME O SEU EMAIL\n"
+                    + "\n"
+                    + "\nOK PARA PROSSEGUIR"
+                    ,"Class: " + this.getClass().getName(),
+                    new ImageIcon( clazzHome.getResource("logocangaco2.png")) ); 
+        }    
+            
+        } catch( Exception e ){}
+    }//GEN-LAST:event_btSalvar1MousePressed
+    
+    List<String> list_cmd;
+    List<File> fileMails;
+    public void enviar_mensagem( String from, String password, String to, String subject, String message ){        
+        /*new Thread() {   @Override public void run() {*/ try { 
+            
+            SendMail SendMail = new SendMail();
+            SendMail.sendMail( from, password, to, subject, message);
+        
+        } catch( Exception e ){ e.printStackTrace(); JOPM JOPM = new JOPM( "MÉTODO: " + "criar_mensagem_e_setar_remetentes()\n"
+                    ,"\nErro ao tentar criar_mensagem_e_setar_remetentes" 
+                    ,this.getClass().getName() ); 
+        } //} }.start();                 
+    }
+    
+    private void excluir_Item_Atual() {                                       
          new Thread() {   @Override public void run() { try { Thread.sleep( 1 );
         
             Exportando = new Exportando("EXCLUINDO...");
@@ -1936,18 +2042,19 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             
                 if( btExcluir.isEnabled() == true ){
                                                   
-                    List<UsuarioSistema> List_2_UsuarioSistema = null;
+                    List<UsuarioSistema> List_2_Generica = null;
                     try{
-                        Query q2 = JPAUtil.em().createNativeQuery("SELECT * FROM JM.USUARIO_SISTEMA WHERE ID = ?", UsuarioSistema.class );
-                        q2.setParameter( 1, UsuarioSistema_Recebido.getId() ); 
-                        List_2_UsuarioSistema = q2.getResultList();
+                        Query q2 = JPAUtil.em().createNativeQuery("SELECT * FROM " + Banco_Ctrl_Tabela_BD.get() + " WHERE ID = ?", UsuarioSistema.class );
+                        q2.setParameter(1, Classe_Bean_Recebida.getId() ); 
+                        List_2_Generica = q2.getResultList();
                     }catch(Exception e){}
                     
-                    String rbusca = ""; try{ rbusca = List_2_UsuarioSistema.get(0).getLogin(); }catch( Exception e ){}
+                    String rbusca = ""; try{ rbusca = List_2_Generica.get(0).getLogin(); }catch( Exception e ){}
                     if( !rbusca.equals("") ){
                                             
                         //Home.ControleTabs.AddTabComControle(jTabbedPane1, "Alterar Usuário", "livroTp.gif", 
                         //new Usuarios_Do_Sistema_02_Cadastrar_Visualizar( Home, "Alterando...", List_2_UsuarioSistema.get(0) ) );
+                        
                         if( rbusca.equalsIgnoreCase("cleilson") ){
                             
                             Class<Imagens_Internas> clazzHome = Imagens_Internas.class;
@@ -1960,21 +2067,31 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
                         }
                         else{
                             
-                            excluir_Imagens( List_2_UsuarioSistema.get(0) );
+                            excluir_Imagens( List_2_Generica.get(0) );
                             
-                            DAOGenericoJPA DAOGenericoJPA2 = new DAOGenericoJPA( List_2_UsuarioSistema.get(0), JPAUtil.em());
+                            DAOGenericoJPA DAOGenericoJPA2 = new DAOGenericoJPA( List_2_Generica.get(0), JPAUtil.em());
                             DAOGenericoJPA2.excluir();
 
                             Home.ControleTabs.removerTabSemControleSelecionado(JTabbedPane_Recebido);
                             
                             Class<Imagens_Internas> clazzHome = Imagens_Internas.class;
-                            JOPM JOptionPaneMod = new JOPM( 1, "EXCLUINDO USUÁRIO SELECIONADO\n"
-                                + "\nUSUÁRIO: " + rbusca 
-                               + "\nEXCLUIDO COM SUCESSO"
+                            JOPM JOptionPaneMod = new JOPM( 1, "EXCLUINDO ITEM ATUAL\n"
+                                + "\nO ITEM: " + rbusca + "FOI"
+                                + "\nEXCLUIDO COM SUCESSO"
                                 + "\nOK Para Prosseguir"
                                 ,"Class: " + this.getClass().getName(),
                             new ImageIcon( clazzHome.getResource("logocangaco2.png")) );                        
                         }
+                    }
+                    else{
+                        
+                        Class<Imagens_Internas> clazzHome = Imagens_Internas.class;
+                        JOPM JOptionPaneMod = new JOPM( 1, "EXCLUINDO ITEM ATUAL\n"
+                            + "\nNÃO HÁ ITEM" 
+                            + "\nPARA SER EXCLUIDO"
+                            + "\nOK Para Prosseguir"
+                            ,"Class: " + this.getClass().getName(),
+                        new ImageIcon( clazzHome.getResource("logocangaco2.png")) );  
                     }
                     
                     Exportando.fechar();
@@ -1988,7 +2105,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
              
         List<UsuarioImagens> lista_Banco = null;
         try{ 
-            Query q = JPAUtil.em().createNativeQuery("SELECT * FROM JM.USUARIO_IMAGENS WHERE ID_USUARIO_SISTEMA = ?", UsuarioImagens.class );
+            Query q = JPAUtil.em().createNativeQuery("SELECT * FROM " + Banco_Ctrl_Tabela_BD.get_imagem() + " WHERE ID_USUARIO_SISTEMA = ?", UsuarioImagens.class );
             q.setParameter( 1, UsuarioSistema_Excluir_Imagens.getId() );
             lista_Banco = q.getResultList();   
         }catch( Exception e ){ }
@@ -2035,6 +2152,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
     private javax.swing.JPanel Pergunta;
     private javax.swing.JButton btExcluir;
     private javax.swing.JButton btSalvar;
+    private javax.swing.JButton btSalvar1;
     public javax.swing.JCheckBox chPermitirAcessar;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel11;
@@ -2086,16 +2204,16 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
         new Thread(){   @Override public void run() { try{ 
             
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////          
-            try{ lb_Cadastrado_Por.setText( UsuarioSistema_Recebido.getIdUsuarioSistemaCadastro().getLogin() ); }catch(Exception e){} 
-            try{ lb_Alterado_Por.setText( UsuarioSistema_Recebido.getIdUsuarioSistemaAlteracao().getLogin() ); }catch(Exception e){}
+            try{ lb_Cadastrado_Por.setText(Classe_Bean_Recebida.getIdUsuarioSistemaCadastro().getLogin() ); }catch(Exception e){} 
+            try{ lb_Alterado_Por.setText(Classe_Bean_Recebida.getIdUsuarioSistemaAlteracao().getLogin() ); }catch(Exception e){}
             
             try{ 
                 
                 ////////dd.MM.yyyy HH:mm:ss/////////////EEEE, d MMMM yyyy HH:mm:ss
                 DateFormat dfmt = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
                 String dataCadastro = ""; 
-                try{ dataCadastro = dfmt.format( UsuarioSistema_Recebido.getDataCadastro() ); }catch(Exception e){}
-                try{ System.out.println( "getDataCadastro - " + UsuarioSistema_Recebido.getDataCadastro() ); }catch(Exception e){}
+                try{ dataCadastro = dfmt.format(Classe_Bean_Recebida.getDataCadastro() ); }catch(Exception e){}
+                try{ System.out.println("getDataCadastro - " + Classe_Bean_Recebida.getDataCadastro() ); }catch(Exception e){}
                 lb_Data_Cadastro.setText( dataCadastro ); 
             }catch(Exception e){} 
             
@@ -2104,8 +2222,8 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
                 ////////dd.MM.yyyy HH:mm:ss/////////////EEEE, d MMMM yyyy HH:mm:ss
                 DateFormat dfmt = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
                 String data_Ultima_Alteracao = ""; 
-                try{ data_Ultima_Alteracao = dfmt.format( UsuarioSistema_Recebido.getDataAlteracao()); }catch(Exception e){}
-                try{ System.out.println( "getDataAlteracao - " + UsuarioSistema_Recebido.getDataAlteracao() ); }catch(Exception e){}
+                try{ data_Ultima_Alteracao = dfmt.format(Classe_Bean_Recebida.getDataAlteracao()); }catch(Exception e){}
+                try{ System.out.println("getDataAlteracao - " + Classe_Bean_Recebida.getDataAlteracao() ); }catch(Exception e){}
                 lb_Data_Ultima_Alteracao.setText( data_Ultima_Alteracao ); 
             }catch(Exception e){} 
             
@@ -2114,17 +2232,17 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
                 ////////dd.MM.yyyy HH:mm:ss/////////////EEEE, d MMMM yyyy HH:mm:ss
                 DateFormat dfmt = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
                 String data_Ultima_Alteracao_Senha = ""; 
-                try{ data_Ultima_Alteracao_Senha = dfmt.format( UsuarioSistema_Recebido.getDataUltimaAlteracaoSenha()); }catch(Exception e){}
+                try{ data_Ultima_Alteracao_Senha = dfmt.format(Classe_Bean_Recebida.getDataUltimaAlteracaoSenha()); }catch(Exception e){}
                 lb_Data_Ultima_Alteracao_Senha.setText( data_Ultima_Alteracao_Senha ); 
             }catch(Exception e){} 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////            
 
-            try{ tf_Email.setText( UsuarioSistema_Recebido.getEmailRecuperacao() ); }catch(Exception e){}
-            try{ tfCodigoAuxiliar.setText( UsuarioSistema_Recebido.getCodigoAuxiliar()); }catch(Exception e){}
+            try{ tf_Email.setText(Classe_Bean_Recebida.getEmailRecuperacao() ); }catch(Exception e){}
+            try{ tfCodigoAuxiliar.setText(Classe_Bean_Recebida.getCodigoAuxiliar()); }catch(Exception e){}
             
             
             try{ 
-                if( UsuarioSistema_Recebido.getPermitirAcessoAoSistema().equalsIgnoreCase("SIM") ){
+                if( Classe_Bean_Recebida.getPermitirAcessoAoSistema().equalsIgnoreCase("SIM") ){
                     
                     chPermitirAcessar.setSelected(true);
                 }    
@@ -2134,9 +2252,9 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
                 }
             }catch(Exception e){}
             
-            try{ tfLogin.setText( UsuarioSistema_Recebido.getLogin()); }catch(Exception e){}            
-            try{ tfSenha1.setText( UsuarioSistema_Recebido.getSenha()); }catch(Exception e){}
-            try{ tfSenha2.setText( UsuarioSistema_Recebido.getSenha()); }catch(Exception e){} 
+            try{ tfLogin.setText(Classe_Bean_Recebida.getLogin()); }catch(Exception e){}            
+            try{ tfSenha1.setText(Classe_Bean_Recebida.getSenha()); }catch(Exception e){}
+            try{ tfSenha2.setText(Classe_Bean_Recebida.getSenha()); }catch(Exception e){} 
           
         } catch( Exception e ){  } } }.start();        
     }
@@ -2157,7 +2275,32 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
         } catch( Exception e ){  } } }.start();        
     }
     
-/// CADASTRANDO ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// CADASTRANDO ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
+    private void verificar_validacao_de_email(){ 
+        
+        try{
+            
+            if( !tfCodigoAuxiliar.getText().trim().equals("") ){
+                
+                verificando_se_o_usuario_e_o_Cleilson();
+            }
+            else{
+                
+                Class<Imagens_Internas> clazzHome = Imagens_Internas.class;
+                JOptionPane.showMessageDialog( null, 
+                              "VERIFICAR VALIDAÇÃO DO EMAIL\n"
+                            + "\nPARA CADASTRAR UM NOVO USUÁRIO:" 
+                            + "\nÉ PRECISO ACESSAR SEU EMAIL E VALIDAR O CÓDIGO"
+                            + "\nCLICK EM VALIDAR EMAIL"
+                            + "\nOK Para Prosseguir",
+                "Class: " + this.getClass().getName(),
+                JOptionPane.INFORMATION_MESSAGE,
+                new ImageIcon( clazzHome.getResource("logocangaco2.png")));
+            }
+            
+        }catch( Exception e ){}
+    }
+    
     private void verificando_se_o_usuario_e_o_Cleilson(){ 
         
         try{
@@ -2168,11 +2311,11 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             }
             else{
                 
-                if( UsuarioSistema_Recebido.getLogin().equalsIgnoreCase("cleilson") ){
+                if( Classe_Bean_Recebida.getLogin().equalsIgnoreCase("cleilson") ){
                 
                     Class<Imagens_Internas> clazzHome = Imagens_Internas.class;
                     JOPM JOptionPaneMod = new JOPM( 1, "ALTERANDO USUÁRIO SELECIONADO\n"
-                            + "\nUSUÁRIO: " + UsuarioSistema_Recebido.getLogin() 
+                            + "\nUSUÁRIO: " + Classe_Bean_Recebida.getLogin() 
                             + "\nVOCÊ NÃO TEM AUTORIZAÇÃO PARA ALTERAR O USUÁRIO CLEILSON"
                             + "\nOK Para Prosseguir"
                             ,"Class: " + this.getClass().getName(),
@@ -2191,17 +2334,17 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
         
         try{
             
-            try{ UsuarioSistema_Recebido.setCodigoAuxiliar( tfCodigoAuxiliar.getText().trim().toUpperCase() ); }catch( Exception e ){}
+            try{ Classe_Bean_Recebida.setCodigoAuxiliar( tfCodigoAuxiliar.getText().trim().toUpperCase() ); }catch( Exception e ){}
             
             try{
                 
                 if( chPermitirAcessar.isSelected() == true ){
                     
-                    try{ UsuarioSistema_Recebido.setPermitirAcessoAoSistema( "SIM" ); }catch( Exception e ){}
+                    try{ Classe_Bean_Recebida.setPermitirAcessoAoSistema( "SIM" ); }catch( Exception e ){}
                 }
                 else{
                     
-                    try{ UsuarioSistema_Recebido.setPermitirAcessoAoSistema( "NAO" ); }catch( Exception e ){}
+                    try{ Classe_Bean_Recebida.setPermitirAcessoAoSistema( "NAO" ); }catch( Exception e ){}
                 }
  
             }catch( Exception e ){}
@@ -2259,8 +2402,8 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
         
         List<UsuarioSistema> UsuarioSistema = null;
         try{ 
-            Query q = JPAUtil.em().createNativeQuery("SELECT * FROM JM.USUARIO_SISTEMA WHERE ID = ?", UsuarioSistema.class );
-            q.setParameter( 1, UsuarioSistema_Recebido.getId() );
+            Query q = JPAUtil.em().createNativeQuery("SELECT * FROM " + Banco_Ctrl_Tabela_BD.get() + " WHERE ID = ?", UsuarioSistema.class );
+            q.setParameter(1, Classe_Bean_Recebida.getId() );
             List<UsuarioSistema> lista_Banco = q.getResultList();   
             UsuarioSistema = lista_Banco;
         }catch( Exception e ){ }
@@ -2271,8 +2414,8 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
         if( !rbusca.equals("") ){
                 
             //CADASTRO / ALTERAÇÃO - USUÁRIO         
-            //try{ UsuarioSistema_Recebido.setIdUsuarioSistemaCadastro( Login.Usuario_Logado ); }catch( Exception e ){}   
-            try{ UsuarioSistema_Recebido.setIdUsuarioSistemaAlteracao( Login.Usuario_Logado ); }catch( Exception e ){}   
+            //try{ Classe_Bean_Recebida.setIdUsuarioSistemaCadastro( Login.Usuario_Logado ); }catch( Exception e ){}   
+            try{ Classe_Bean_Recebida.setIdUsuarioSistemaAlteracao( Login.Usuario_Logado ); }catch( Exception e ){}   
              
             //CADASTRO / ALTERAÇÃO - DATA - ALTERAÇÃO 
             try{ 
@@ -2289,7 +2432,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
                 
                 try{
                     
-                    UsuarioSistema_Recebido.setDataAlteracao( currentTimestamp ); 
+                    Classe_Bean_Recebida.setDataAlteracao( currentTimestamp ); 
                     //UsuarioSistema_Recebido.setDataUltimaAlteracaoSenha( data );
                     
                 }catch(Exception e){}
@@ -2302,8 +2445,8 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
         else{
 
             //CADASTRO / ALTERAÇÃO - USUÁRIO 
-            try{ UsuarioSistema_Recebido.setIdUsuarioSistemaCadastro( Login.Usuario_Logado ); }catch( Exception e ){}                
-            try{ UsuarioSistema_Recebido.setIdUsuarioSistemaAlteracao( Login.Usuario_Logado ); }catch( Exception e ){}
+            try{ Classe_Bean_Recebida.setIdUsuarioSistemaCadastro( Login.Usuario_Logado ); }catch( Exception e ){}                
+            try{ Classe_Bean_Recebida.setIdUsuarioSistemaAlteracao( Login.Usuario_Logado ); }catch( Exception e ){}
                 
             //CADASTRO / ALTERAÇÃO - DATA - CADASTRANDO 
             try{ 
@@ -2320,11 +2463,11 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
                 
                 try{
 
-                    UsuarioSistema_Recebido.setDataCadastro( currentTimestamp ); 
+                    Classe_Bean_Recebida.setDataCadastro( currentTimestamp ); 
                     
-                    UsuarioSistema_Recebido.setDataAlteracao( currentTimestamp ); 
+                    Classe_Bean_Recebida.setDataAlteracao( currentTimestamp ); 
                     
-                    UsuarioSistema_Recebido.setDataUltimaAlteracaoSenha( currentTimestamp );
+                    Classe_Bean_Recebida.setDataUltimaAlteracaoSenha( currentTimestamp );
                     
                 }catch(Exception e){}
             }catch(Exception e){} 
@@ -2344,7 +2487,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             
             if( ValidarEmail.validar( tf_Email.getText().trim() ) == true ){
                                     
-                try{ UsuarioSistema_Recebido.setEmailRecuperacao( tf_Email.getText().trim().toUpperCase() ); }catch( Exception e ){}
+                try{ Classe_Bean_Recebida.setEmailRecuperacao( tf_Email.getText().trim().toUpperCase() ); }catch( Exception e ){}
                 
                 verificar_Login();
             }
@@ -2382,7 +2525,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             String alterada = ""; 
             try{ alterada = rbusca.replace(" ", ""); }catch( Exception e ){}
 
-            try{UsuarioSistema_Recebido.setLogin( alterada ); }catch( Exception e ){}
+            try{Classe_Bean_Recebida.setLogin( alterada ); }catch( Exception e ){}
  
             verificar_Senha1();
         }
@@ -2458,7 +2601,7 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
             
             if( senha_Atual_1.equals(senha_Atual_2) ){
                                  
-                try{ UsuarioSistema_Recebido.setSenha( senhaY4 ); } catch( Exception e ){}
+                try{ Classe_Bean_Recebida.setSenha( senhaY4 ); } catch( Exception e ){}
                 
                 verificar_Repeticao_Codigo_Auxiliar();
             }     
@@ -2497,16 +2640,16 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
         System.out.println("verificar_Repeticao_Codigo_Auxiliar");
         
         String rbusca = ""; 
-        try{ rbusca = UsuarioSistema_Recebido.getCodigoAuxiliar().trim(); }catch( Exception e ){}
+        try{ rbusca = Classe_Bean_Recebida.getCodigoAuxiliar().trim(); }catch( Exception e ){}
         
         int iDbusca = 0; 
-        try{ iDbusca = UsuarioSistema_Recebido.getId(); }catch( Exception e ){}
+        try{ iDbusca = Classe_Bean_Recebida.getId(); }catch( Exception e ){}
         
         boolean material_ja_Cadastrado = false;
         if( !rbusca.equals("") ){
 /////// VERIFICANDO REPETIÇÃO - CÓDIGO AUXILIAR /////////////////////////////////////////////////////////////////////////////////////////////////////////
             try{ 
-                Query q2 = JPAUtil.em().createNativeQuery("SELECT * FROM JM.USUARIO_SISTEMA WHERE CODIGO_AUXILIAR = ?", UsuarioSistema.class );
+                Query q2 = JPAUtil.em().createNativeQuery("SELECT * FROM " + Banco_Ctrl_Tabela_BD.get() + " WHERE CODIGO_AUXILIAR = ?", UsuarioSistema.class );
                 q2.setParameter( 1, rbusca ); 
                 List<UsuarioSistema> list = q2.getResultList();                    
                     
@@ -2561,16 +2704,16 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
         System.out.println("verificar_Repeticao_Login");
         
         String rbusca = ""; 
-        try{ rbusca = UsuarioSistema_Recebido.getLogin().toUpperCase(); }catch( Exception e ){}
+        try{ rbusca = Classe_Bean_Recebida.getLogin().toUpperCase(); }catch( Exception e ){}
         
         int iDbusca = 0; 
-        try{ iDbusca = UsuarioSistema_Recebido.getId(); }catch( Exception e ){}
+        try{ iDbusca = Classe_Bean_Recebida.getId(); }catch( Exception e ){}
         
         boolean material_ja_Cadastrado = false;
         if( !rbusca.equals("") ){
 /////// VERIFICANDO REPETIÇÃO - CÓDIGO AUXILIAR /////////////////////////////////////////////////////////////////////////////////////////////////////////
             try{ 
-                Query q2 = JPAUtil.em().createNativeQuery("SELECT * FROM JM.USUARIO_SISTEMA WHERE LOGIN = ?", UsuarioSistema.class );
+                Query q2 = JPAUtil.em().createNativeQuery("SELECT * FROM " + Banco_Ctrl_Tabela_BD.get() + " WHERE LOGIN = ?", UsuarioSistema.class );
                 q2.setParameter( 1, rbusca ); 
                 List<UsuarioSistema> list = q2.getResultList();                    
                     
@@ -2624,21 +2767,21 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
     private void cadastrar_Usuario(){  
         try{
             
-            DAOGenericoJPA DAOGenericoJPA2 = new DAOGenericoJPA( UsuarioSistema_Recebido, JPAUtil.em());
+            DAOGenericoJPA DAOGenericoJPA2 = new DAOGenericoJPA( Classe_Bean_Recebida, JPAUtil.em());
             UsuarioSistema UsuarioSistema_Cadastrado = (UsuarioSistema) DAOGenericoJPA2.gravanovoOUatualizar();
             
             verificar_lista_de_Endereco_imagemExterna(UsuarioSistema_Cadastrado);
             
             ///////////////////////////////////////////////////
             if(status_cadastro.equalsIgnoreCase("Cadastrando...")){                
-                UsuarioSistema_Recebido = UsuarioSistema_Cadastrado;
+                Classe_Bean_Recebida = UsuarioSistema_Cadastrado;
                 status_cadastro = "Visualizando...";
                 setar_Dados_Iniciais();  
             }
             ///////////////////////////////////////////////////
             
             String rbusca = ""; 
-            try{ rbusca = UsuarioSistema_Recebido.getLogin().toUpperCase(); }catch( Exception e ){}
+            try{ rbusca = Classe_Bean_Recebida.getLogin().toUpperCase(); }catch( Exception e ){}
         
             Class<br.com.jmary.home.imagens.Imagens_Internas> clazzHome = br.com.jmary.home.imagens.Imagens_Internas.class;
             JOPM JOptionPaneMod = new JOPM( 1, "CADASTRO\n"
@@ -2682,7 +2825,6 @@ public class Usuarios_Do_Sistema_02_Cadastrar_Visualizar extends javax.swing.JPa
                 icon   = new ImageIcon(bufImg);
                 image  = icon.getImage();//ImageIO.read(f);  
             } catch (IOException ex) {}  
-
             
                 String nome = imagemExterna_Endereco.getName();
                 String nomeList[] = nome.split(Pattern.quote("."));

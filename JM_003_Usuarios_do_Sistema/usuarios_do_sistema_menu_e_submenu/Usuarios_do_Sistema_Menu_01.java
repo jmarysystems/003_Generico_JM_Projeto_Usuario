@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import login_do_sistema_menu_e_submenu.Login_Do_Sistema_Submenu_01;
+import visualizador_imagens_menu_e_submenu.Visualizador_Imagens_Submenu_01;
 
 /**
  *
@@ -378,7 +379,7 @@ public class Usuarios_do_Sistema_Menu_01 extends javax.swing.JPanel {
         Home.tocarSon.tocar( 51 );
         try{
 
-            //Home.adicionar_SubMenu(new Visualizador_Imagens_Submenu_01( Home ) );
+            Home.adicionar_SubMenu(new Visualizador_Imagens_Submenu_01( Home ) );
 
         } catch( Exception e ){ e.printStackTrace(); JOPM JOptionPaneMod = new JOPM( 2, "adicionarSubmenu( Component c ), \n"
             + e.getMessage() + "\n", "Classe: " + "Controle_de_Alterar_Menu_Norte" ); }

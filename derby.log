@@ -1,10 +1,10 @@
 ----------------------------------------------------------------
-Wed Aug 29 08:12:47 BRT 2018:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): instance a816c00e-0165-8562-c3b4-000000590c08 
-on database directory C:\000000\JM\00_Generico\003_Generico_JM_Projeto_Usuario\Generico_JM_003_Usuarios_do_Sistema\Banco_De_Dados  with class loader sun.misc.Launcher$AppClassLoader@d93b30 
-Loaded from file:/C:/000000/JM/00_Generico/003_Generico_JM_Projeto_Usuario/Generico_JM_003_Usuarios_do_Sistema/dist/run1140241283/lib/derby.jar
+Sat Nov 23 01:59:42 BRST 2019:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): instance a816c00e-016e-966a-5937-0000008de0d0 
+on database directory F:\_01\00_Generico\003_Generico_JM_Projeto_Usuario\Generico_JM_003_Usuarios_do_Sistema\Banco_De_Dados_00  with class loader sun.misc.Launcher$AppClassLoader@a298b7 
+Loaded from file:/F:/_01/00_Generico/003_Generico_JM_Projeto_Usuario/Generico_JM_003_Usuarios_do_Sistema/dist/run40853250/lib/derby.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_131-b11
-user.dir=C:\000000\JM\00_Generico\003_Generico_JM_Projeto_Usuario\Generico_JM_003_Usuarios_do_Sistema
+java.runtime.version=1.8.0_221-b11
+user.dir=F:\_01\00_Generico\003_Generico_JM_Projeto_Usuario\Generico_JM_003_Usuarios_do_Sistema
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
